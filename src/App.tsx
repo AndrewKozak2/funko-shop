@@ -31,6 +31,34 @@ function App() {
     }
   };
 
+  const handleIncreaseQuantity = (idToIncrease: string) => {
+    const updatedCart = cart.map((item) => {
+      if (item.product.id === idToIncrease) {
+        return {
+          ...item,
+          quantity: item.quantity + 1,
+        };
+      }
+      return item;
+    });
+    setCart(updatedCart);
+  };
+
+  const handleDecreaseQuantity = (idToDecrease: string) => {
+    const updatedCart = cart
+      .map((item) => {
+        if (item.product.id === idToDecrease) {
+          return {
+            ...item,
+            quantity: item.quantity - 1,
+          };
+        }
+        return item;
+      })
+      .filter((item) => item.quantity > 0);
+    setCart(updatedCart);
+  };
+
   const handleRemoveFromCart = (idToRemove: string) => {
     const filteredCart = cart.filter((item) => item.product.id !== idToRemove);
     setCart(filteredCart);
@@ -47,7 +75,12 @@ function App() {
             onAddToCart={handleAddToCart}
           />
         ))}
-        <Cart cartItems={cart} onRemoveItem={handleRemoveFromCart} />
+        <Cart
+          cartItems={cart}
+          onRemoveItem={handleRemoveFromCart}
+          onIncreaseQuantity={handleIncreaseQuantity}
+          onDecreaseQuantity={handleDecreaseQuantity}
+        />
       </div>
     </div>
   );
