@@ -1,5 +1,7 @@
 import { useCart } from "./hooks/useCart";
+import { useState } from "react";
 import { mockProducts } from "./data/products";
+import { Header } from "./components/Header/Header";
 import { ProductCard } from "./components/ProductCard/ProductCard";
 import { Cart } from "./components/Cart/Cart";
 import "./App.css";
@@ -14,9 +16,16 @@ function App() {
     clearCart,
   } = useCart();
 
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <div>
-      <h1>Funko Pop Store</h1>
+      <Header
+        cartItemsCount={totalItems}
+        onOpenCart={() => setIsCartOpen(true)}
+      />
       <div className="product-grid">
         {mockProducts.map((product) => (
           <ProductCard
@@ -25,13 +34,16 @@ function App() {
             onAddToCart={addToCart}
           />
         ))}
-        <Cart
-          cartItems={cart}
-          onRemoveItem={removeFromCart}
-          onIncreaseQuantity={increaseQuantity}
-          onDecreaseQuantity={decreaseQuantity}
-          onCheckout={clearCart}
-        />
+        {isCartOpen && (
+          <Cart
+            cartItems={cart}
+            onRemoveItem={removeFromCart}
+            onIncreaseQuantity={increaseQuantity}
+            onDecreaseQuantity={decreaseQuantity}
+            onCheckout={clearCart}
+            onCloseCart={() => setIsCartOpen(false)}
+          />
+        )}
       </div>
     </div>
   );

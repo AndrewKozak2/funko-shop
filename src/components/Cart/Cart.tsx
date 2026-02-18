@@ -7,6 +7,7 @@ interface CartProps {
   onIncreaseQuantity: (id: string) => void;
   onDecreaseQuantity: (id: string) => void;
   onCheckout: () => void;
+  onCloseCart: () => void;
 }
 
 export function Cart({
@@ -15,6 +16,7 @@ export function Cart({
   onIncreaseQuantity,
   onDecreaseQuantity,
   onCheckout,
+  onCloseCart,
 }: CartProps) {
   const totalPrice = cartItems
     .reduce((sum, item) => sum + item.product.price * item.quantity, 0)
@@ -22,6 +24,7 @@ export function Cart({
   return (
     <div className={styles.container}>
       <h2>Ваш кошик</h2>
+      <button onClick={onCloseCart}>Закрити</button>
       {cartItems.length === 0 && <p>Ваш кошик порожній</p>}
       <ul>
         {cartItems.map((item) => (
