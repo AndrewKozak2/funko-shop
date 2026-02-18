@@ -6,3 +6,8 @@ export interface FunkoPop {
   franchise: string;
   isExclusive: boolean;
 }
+
+export interface CartItem {
+  product: FunkoPop;
+  quantity: number;
+}

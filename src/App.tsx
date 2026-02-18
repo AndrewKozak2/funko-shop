@@ -1,15 +1,39 @@
 import { useState } from "react";
 import { mockProducts } from "./data/products";
-import { type FunkoPop } from "./types/product";
+import { type FunkoPop, type CartItem } from "./types/product";
 import { ProductCard } from "./components/ProductCard/ProductCard";
+import { Cart } from "./components/Cart/Cart";
 import "./App.css";
 
 function App() {
-  const [cart, setCart] = useState<FunkoPop[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
 
-  const handleAddToCard = (product: FunkoPop) => {
-    setCart([...cart, product]);
-    console.log("Товарів у кошику:", cart.length + 1);
+  const handleAddToCart = (product: FunkoPop) => {
+    const existingItem = cart.find((item) => item.product.id === product.id);
+
+    if (existingItem) {
+      const updatedCart = cart.map((item) => {
+        if (item.product.id === product.id) {
+          return {
+            ...item,
+            quantity: item.quantity + 1,
+          };
+        }
+        return item;
+      });
+      setCart(updatedCart);
+    } else {
+      const newItem = {
+        product: product,
+        quantity: 1,
+      };
+      setCart([...cart, newItem]);
+    }
+  };
+
+  const handleRemoveFromCart = (idToRemove: string) => {
+    const filteredCart = cart.filter((item) => item.product.id !== idToRemove);
+    setCart(filteredCart);
   };
 
   return (
@@ -20,9 +44,10 @@ function App() {
           <ProductCard
             key={product.id}
             product={product}
-            onAddToCart={handleAddToCard}
+            onAddToCart={handleAddToCart}
           />
         ))}
+        <Cart cartItems={cart} onRemoveItem={handleRemoveFromCart} />
       </div>
     </div>
   );
