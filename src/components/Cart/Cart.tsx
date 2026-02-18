@@ -6,6 +6,7 @@ interface CartProps {
   onRemoveItem: (id: string) => void;
   onIncreaseQuantity: (id: string) => void;
   onDecreaseQuantity: (id: string) => void;
+  onCheckout: () => void;
 }
 
 export function Cart({
@@ -13,6 +14,7 @@ export function Cart({
   onRemoveItem,
   onIncreaseQuantity,
   onDecreaseQuantity,
+  onCheckout,
 }: CartProps) {
   const totalPrice = cartItems
     .reduce((sum, item) => sum + item.product.price * item.quantity, 0)
@@ -37,6 +39,18 @@ export function Cart({
           </li>
         ))}
         <h3>{totalPrice}</h3>
+
+        {cartItems.length > 0 && (
+          <button
+            className={styles.checkoutButton}
+            onClick={() => {
+              alert("замовлення успішне");
+              onCheckout();
+            }}
+          >
+            Оформити замовлення
+          </button>
+        )}
       </ul>
     </div>
   );

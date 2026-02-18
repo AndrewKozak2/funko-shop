@@ -70,11 +70,16 @@ export function useCart() {
     const filteredCart = cart.filter((item) => item.product.id !== idToRemove);
     setCart(filteredCart);
   };
+
+  const clearCart = () => {
+    setCart([]);
+  };
   return {
     cart,
     addToCart: handleAddToCart,
     increaseQuantity: handleIncreaseQuantity,
     decreaseQuantity: handleDecreaseQuantity,
     removeFromCart: handleRemoveFromCart,
+    clearCart: clearCart,
   };
 }

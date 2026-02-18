@@ -11,6 +11,7 @@ function App() {
     increaseQuantity,
     decreaseQuantity,
     removeFromCart,
+    clearCart,
   } = useCart();
 
   return (
@@ -29,6 +30,7 @@ function App() {
           onRemoveItem={removeFromCart}
           onIncreaseQuantity={increaseQuantity}
           onDecreaseQuantity={decreaseQuantity}
+          onCheckout={clearCart}
         />
       </div>
     </div>
