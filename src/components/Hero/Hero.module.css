@@ -1,39 +1,79 @@
-.heroWrapper {
-  min-height: 70vh;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url("https://images.squarespace-cdn.com/content/v1/681b480645854363d51038a8/fca817d2-e39d-4eea-8d6d-7492d5caba0e/wallpaperuse.com-funko-pop-wallpaper-302906.jpg");
-  background-size: cover;
-  background-position: center;
-  color: white;
+.heroPanel {
+  display: flex;
+  background-color: #0b1524;
+  border: 2px solid #00f6ff;
+  box-shadow:
+    0 0 20px rgba(0, 246, 255, 0.3),
+    inset 0 0 15px rgba(0, 246, 255, 0.1);
+  border-radius: 16px;
+  padding: 10px 0 0 40px;
+  position: relative;
+  min-height: 350px;
 }
-.heroContent {
+.preOrderBtn {
+  background: #ff880095;
+  border: 2px solid #ff8a00;
+  color: white;
+  padding: 8px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.preOrderBtn:hover {
+  background-color: #ff8a00;
+  color: #0b1524;
+  box-shadow: 0 0 15px rgba(255, 138, 0, 0.5);
+}
+
+.heroSection {
+  padding: 40px 0;
+}
+.textSide {
+  flex-basis: 50%;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  height: 70vh;
 }
 
-.heroWrapper h1 {
-  font-size: 3rem;
-  margin-bottom: 30px;
-  text-align: center;
-  text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-.heroWrapper button {
-  background-color: var(--color-primary);
-  color: white;
+.badge {
+  color: #00f6ff;
+  font-size: 0.9rem;
   font-weight: 600;
-  font-size: 1.1rem;
-  padding: 15px 30px;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: block;
 }
 
-.heroWrapper button:hover {
-  transform: scale(1.05);
-  transition: transform 0.2s;
+.textSide h1 {
+  font-size: 4rem;
+  line-height: 1;
+  margin: 0 0 30px 0;
+  color: white;
+  text-shadow:
+    0 0 15px rgba(0, 246, 255, 0.5),
+    0 0 30px rgba(0, 246, 255, 0.3);
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.imageSide {
+  flex-basis: 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.imageSide img {
+  width: 70%;
+  max-width: none;
+  margin-right: -50px;
+  margin-top: -60px;
+  z-index: 999;
 }

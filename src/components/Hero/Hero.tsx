@@ -2,13 +2,21 @@ import styles from "./Hero.module.css";
 
 export function Hero() {
   return (
-    <div className="container">
-      <section className={styles.heroWrapper}>
-        <div className={styles.heroContent}>
-          <h1>Ексклюзивні колекційні фігурки</h1>
-          <button>Дивитись каталог</button>
+    <section className={styles.heroSection}>
+      <div className="container">
+        <div className={styles.cyberWrapper}>
+          <div className={styles.heroPanel}>
+            <div className={styles.textSide}>
+              <span className={styles.badge}>LIMITED EDITION</span>
+              <h1>IRON MAN POP</h1>
+              <button className={styles.preOrderBtn}>Pre-Order Now</button>
+            </div>
+            <div className={styles.imageSide}>
+              <img src="././src/assets/iron.png" alt="Iron Man" />
+            </div>
+          </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

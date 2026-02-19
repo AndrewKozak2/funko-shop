@@ -2,9 +2,9 @@
 
 :root {
   --font-main: "Inter", sans-serif;
-  --color-bg: #f5fbff;
-  --color-text: #1a1a1a;
-  --color-primary: #e63946;
+  --color-bg: #0b1120;
+  --color-text: #f8fafc;
+  --color-primary: #ff8a00;
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 

@@ -21,6 +21,33 @@
 .brandAccent {
   color: var(--color-primary);
 }
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  background-color: #1e293b;
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid #334155;
+}
+
+.searchInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-text);
+}
+
+.searchIcon {
+  color: #94a3b8;
+  margin-right: 8px;
+}
+
+.searchContainer:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px rgba(0, 246, 255, 0.3);
+}
+
 .cartBtn {
   position: relative;
   border: none;
@@ -32,6 +59,10 @@
 
 .cartBtn:hover {
   transform: scale(1.1);
+}
+
+.shopingCart {
+  color: white;
 }
 
 .badge {
