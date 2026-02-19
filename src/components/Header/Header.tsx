@@ -9,7 +9,7 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
     <div className={styles.header}>
       <h1>Funko Pop Store</h1>
       <div>
-        <button onClick={onOpenCart}>{cartItemsCount}</button>
+        <button onClick={onOpenCart}>Кошик ({cartItemsCount})</button>
       </div>
     </div>
   );

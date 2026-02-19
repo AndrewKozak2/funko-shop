@@ -34,16 +34,16 @@ function App() {
             onAddToCart={addToCart}
           />
         ))}
-        {isCartOpen && (
-          <Cart
-            cartItems={cart}
-            onRemoveItem={removeFromCart}
-            onIncreaseQuantity={increaseQuantity}
-            onDecreaseQuantity={decreaseQuantity}
-            onCheckout={clearCart}
-            onCloseCart={() => setIsCartOpen(false)}
-          />
-        )}
+
+        <Cart
+          isOpen={isCartOpen}
+          cartItems={cart}
+          onRemoveItem={removeFromCart}
+          onIncreaseQuantity={increaseQuantity}
+          onDecreaseQuantity={decreaseQuantity}
+          onCheckout={clearCart}
+          onCloseCart={() => setIsCartOpen(false)}
+        />
       </div>
     </div>
   );
