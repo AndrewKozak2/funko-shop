@@ -1,3 +1,4 @@
+import { ShoppingCart } from "lucide-react";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
@@ -6,11 +7,25 @@ interface HeaderProps {
 }
 export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
   return (
-    <div className={styles.header}>
-      <h1>Funko Pop Store</h1>
-      <div>
-        <button onClick={onOpenCart}>Кошик ({cartItemsCount})</button>
+    <header className={styles.headerWrapper}>
+      <div className="container">
+        <div className={styles.headerContent}>
+          <a className={styles.logoLink} href="/">
+            <h1 className={styles.logo}>
+              <span className={styles.brandAccent}>Funko</span> Pop Store
+            </h1>
+          </a>
+
+          <div>
+            <button className={styles.cartBtn} onClick={onOpenCart}>
+              <ShoppingCart size={18} />
+              {cartItemsCount > 0 && (
+                <span className={styles.badge}>{cartItemsCount}</span>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </header>
   );
 }

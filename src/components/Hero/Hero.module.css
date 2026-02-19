@@ -1,0 +1,39 @@
+.heroWrapper {
+  min-height: 70vh;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("https://images.squarespace-cdn.com/content/v1/681b480645854363d51038a8/fca817d2-e39d-4eea-8d6d-7492d5caba0e/wallpaperuse.com-funko-pop-wallpaper-302906.jpg");
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
+.heroWrapper h1 {
+  font-size: 3rem;
+  margin-bottom: 30px;
+  text-align: center;
+  text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.heroWrapper button {
+  background-color: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.heroWrapper button:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s;
+}
