@@ -3,8 +3,8 @@ export interface FunkoPop {
   title: string;
   price: number;
   imageUrl: string;
-  franchise: string;
   isExclusive: boolean;
+  collection: string;
 }
 
 export interface CartItem {

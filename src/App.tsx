@@ -19,8 +19,19 @@ function App() {
   } = useCart();
 
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
+  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  const filteredProducts = mockProducts.filter((product) => {
+    const isWithinPrice =
+      product.price >= priceRange[0] && product.price <= priceRange[1];
+    const isWithinCollection =
+      selectedCollections.length === 0 ||
+      selectedCollections.includes(product.collection);
+    return isWithinPrice && isWithinCollection;
+  });
 
   return (
     <div>
@@ -32,10 +43,21 @@ function App() {
       <div className="container">
         <div className="shop-layout">
           <aside>
-            <Filters />
+            <Filters
+              selectedCollection={selectedCollections}
+              priceRange={priceRange}
+              onPriceChange={setPriceRange}
+              onCollectionChange={(collectionName) => {
+                setSelectedCollections((prev) =>
+                  prev.includes(collectionName)
+                    ? prev.filter((item) => item !== collectionName)
+                    : [...prev, collectionName],
+                );
+              }}
+            />
           </aside>
           <main className="product-grid">
-            {mockProducts.map((product) => (
+            {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}

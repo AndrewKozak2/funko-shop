@@ -17,7 +17,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
       <h3 className={styles.title}>{product.title}</h3>
       <p className={styles.price}>${product.price}</p>
       <button className={styles.button} onClick={() => onAddToCart(product)}>
-        Add to Card
+        Add to Cart
       </button>
     </div>
   );
