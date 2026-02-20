@@ -3,6 +3,7 @@ import { useState } from "react";
 import { mockProducts } from "./data/products";
 import { Header } from "./components/Header/Header";
 import { Hero } from "./components/Hero/Hero";
+import { Filters } from "./components/Filters/Filters";
 import { ProductCard } from "./components/ProductCard/ProductCard";
 import { Cart } from "./components/Cart/Cart";
 import "./App.css";
@@ -29,25 +30,29 @@ function App() {
       />
       <Hero />
       <div className="container">
-        <div className="product-grid">
-          {mockProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAddToCart={addToCart}
-            />
-          ))}
-
-          <Cart
-            isOpen={isCartOpen}
-            cartItems={cart}
-            onRemoveItem={removeFromCart}
-            onIncreaseQuantity={increaseQuantity}
-            onDecreaseQuantity={decreaseQuantity}
-            onCheckout={clearCart}
-            onCloseCart={() => setIsCartOpen(false)}
-          />
+        <div className="shop-layout">
+          <aside>
+            <Filters />
+          </aside>
+          <main className="product-grid">
+            {mockProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={addToCart}
+              />
+            ))}
+          </main>
         </div>
+        <Cart
+          isOpen={isCartOpen}
+          cartItems={cart}
+          onRemoveItem={removeFromCart}
+          onIncreaseQuantity={increaseQuantity}
+          onDecreaseQuantity={decreaseQuantity}
+          onCheckout={clearCart}
+          onCloseCart={() => setIsCartOpen(false)}
+        />
       </div>
     </div>
   );
