@@ -15,22 +15,38 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
               <span className={styles.brandAccent}>Funko</span> Pop Store
             </h1>
           </a>
-          <div className={styles.searchContainer}>
-            <input
-              type="text"
-              placeholder="Пошук..."
-              className={styles.searchInput}
-            />
-            <Search size={20} className={styles.searchIcon} />
-          </div>
+          <nav className={styles.navigation}>
+            <a href="#" className={styles.navLink}>
+              Home
+            </a>
+            <a href="#" className={styles.navLink}>
+              Figures
+            </a>
+            <a href="#" className={styles.navLink}>
+              Exclusives
+            </a>
+            <a href="#" className={styles.navLink}>
+              Sale
+            </a>
+          </nav>
+          <div className={styles.actions}>
+            <div className={styles.searchContainer}>
+              <input
+                type="text"
+                placeholder="Пошук..."
+                className={styles.searchInput}
+              />
+              <Search size={20} className={styles.searchIcon} />
+            </div>
 
-          <div>
-            <button className={styles.cartBtn} onClick={onOpenCart}>
-              <ShoppingCart size={24} className={styles.shopingCart} />
-              {cartItemsCount > 0 && (
-                <span className={styles.badge}>{cartItemsCount}</span>
-              )}
-            </button>
+            <div>
+              <button className={styles.cartBtn} onClick={onOpenCart}>
+                <ShoppingCart size={24} className={styles.shopingCart} />
+                {cartItemsCount > 0 && (
+                  <span className={styles.badge}>{cartItemsCount}</span>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -9,16 +9,15 @@ interface ProductCardProps {
 export function ProductCard({ product, onAddToCart }: ProductCardProps) {
   return (
     <div className={styles.card}>
-      <h3>{product.title}</h3>
       <img
         className={styles.image}
         src={product.imageUrl}
         alt={product.title}
       />
-      <p className={styles.price}>Ціна:{product.price}</p>
-      {product.isExclusive && <span className={styles.badge}>Exclusive</span>}
+      <h3 className={styles.title}>{product.title}</h3>
+      <p className={styles.price}>${product.price}</p>
       <button className={styles.button} onClick={() => onAddToCart(product)}>
-        Додати в кошик
+        Add to Card
       </button>
     </div>
   );

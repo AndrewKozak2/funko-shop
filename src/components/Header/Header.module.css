@@ -1,5 +1,7 @@
 .headerWrapper {
   background-color: var(--color-bg);
+  border-bottom: 2px solid #00bdc347;
+  margin-bottom: 0.5rem;
 }
 
 .headerContent {
@@ -22,13 +24,35 @@
   color: var(--color-primary);
 }
 
+.navigation {
+  display: flex;
+  gap: 2rem;
+}
+
+.navLink {
+  color: #94a3b8;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+.navLink:hover {
+  color: #00f6ff;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
 .searchContainer {
   display: flex;
   align-items: center;
   background-color: #1e293b;
-  padding: 8px 16px;
+  padding: 8px 10px;
   border-radius: 10px;
   border: 1px solid #334155;
+  transition: all 0.3s ease;
 }
 
 .searchInput {
@@ -36,11 +60,12 @@
   border: none;
   outline: none;
   color: var(--color-text);
+  width: 200px;
 }
 
 .searchIcon {
   color: #94a3b8;
-  margin-right: 8px;
+  margin-left: 8px;
 }
 
 .searchContainer:focus-within {

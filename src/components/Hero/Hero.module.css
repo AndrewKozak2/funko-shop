@@ -1,6 +1,6 @@
 .heroPanel {
   display: flex;
-  background-color: #0b1524;
+  background: linear-gradient(90deg, #060c15 5%, #243b5d 100%);
   border: 2px solid #00f6ff;
   box-shadow:
     0 0 20px rgba(0, 246, 255, 0.3),
@@ -14,9 +14,9 @@
   background: #ff880095;
   border: 2px solid #ff8a00;
   color: white;
-  padding: 8px 24px;
+  padding: 10px 24px;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -42,7 +42,7 @@
 
 .badge {
   color: #00f6ff;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -51,7 +51,7 @@
 }
 
 .textSide h1 {
-  font-size: 4rem;
+  font-size: 4.5rem;
   line-height: 1;
   margin: 0 0 30px 0;
   color: white;
@@ -63,7 +63,7 @@
 }
 
 .imageSide {
-  flex-basis: 45%;
+  flex-basis: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
