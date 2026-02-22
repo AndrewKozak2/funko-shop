@@ -1,26 +1,18 @@
-import { type CartItem } from "../../types/product";
+import { useCartStore } from "../../store/cartStore";
 import { X, Minus, Plus, Trash2, ShoppingBag, CreditCard } from "lucide-react";
 import styles from "./Cart.module.css";
 
 interface CartProps {
-  cartItems: CartItem[];
   isOpen: boolean;
-  onRemoveItem: (id: string) => void;
-  onIncreaseQuantity: (id: string) => void;
-  onDecreaseQuantity: (id: string) => void;
-  onCheckout: () => void;
   onCloseCart: () => void;
 }
 
-export function Cart({
-  cartItems,
-  isOpen,
-  onRemoveItem,
-  onIncreaseQuantity,
-  onDecreaseQuantity,
-  onCheckout,
-  onCloseCart,
-}: CartProps) {
+export function Cart({ isOpen, onCloseCart }: CartProps) {
+  const cartItems = useCartStore((state) => state.cart);
+  const onRemoveItem = useCartStore((state) => state.removeFromCart);
+  const onIncreaseQuantity = useCartStore((state) => state.increaseQuantity);
+  const onDecreaseQuantity = useCartStore((state) => state.decreaseQuantity);
+  const onCheckout = useCartStore((state) => state.clearCart);
   const totalPrice = cartItems
     .reduce((sum, item) => sum + item.product.price * item.quantity, 0)
     .toFixed(2);

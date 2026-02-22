@@ -1,4 +1,4 @@
-import { useCart } from "./hooks/useCart";
+import { useCartStore } from "./store/cartStore";
 import { useState } from "react";
 import { mockProducts } from "./data/products";
 import { Header } from "./components/Header/Header";
@@ -9,14 +9,8 @@ import { Cart } from "./components/Cart/Cart";
 import "./App.css";
 
 function App() {
-  const {
-    cart,
-    addToCart,
-    increaseQuantity,
-    decreaseQuantity,
-    removeFromCart,
-    clearCart,
-  } = useCart();
+  const cart = useCartStore((state) => state.cart);
+  const addToCart = useCartStore((state) => state.addToCart);
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
@@ -66,15 +60,7 @@ function App() {
             ))}
           </main>
         </div>
-        <Cart
-          isOpen={isCartOpen}
-          cartItems={cart}
-          onRemoveItem={removeFromCart}
-          onIncreaseQuantity={increaseQuantity}
-          onDecreaseQuantity={decreaseQuantity}
-          onCheckout={clearCart}
-          onCloseCart={() => setIsCartOpen(false)}
-        />
+        <Cart isOpen={isCartOpen} onCloseCart={() => setIsCartOpen(false)} />
       </div>
     </div>
   );
