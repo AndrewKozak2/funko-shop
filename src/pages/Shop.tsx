@@ -1,3 +1,4 @@
+import { useSearchStore } from "../store/searchStore";
 import { useState } from "react";
 import { mockProducts } from "../data/products";
 import { Hero } from "../components/Hero/Hero";
@@ -7,20 +8,29 @@ import { useCartStore } from "../store/cartStore";
 
 export function Shop() {
   const addToCart = useCartStore((state) => state.addToCart);
+  const searchQuery = useSearchStore((state) => state.searchQuery);
+
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
-    const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
+  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
+
   const filteredProducts = mockProducts.filter((product) => {
     const isWithinPrice =
       product.price >= priceRange[0] && product.price <= priceRange[1];
+
     const isWithinCollection =
       selectedCollections.length === 0 ||
       selectedCollections.includes(product.collection);
-    return isWithinPrice && isWithinCollection;
+
+    const isMatchingSearch = product.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    return isWithinPrice && isWithinCollection && isMatchingSearch;
   });
 
   return (
     <>
-    <Hero />
+      <Hero />
       <div className="container">
         <div className="shop-layout">
           <aside>
@@ -47,7 +57,7 @@ export function Shop() {
             ))}
           </main>
         </div>
-        </div>
-        </>
-  )
+      </div>
+    </>
+  );
 }

@@ -1,3 +1,4 @@
+import { useSearchStore } from "../../store/searchStore";
 import { ShoppingCart, Search } from "lucide-react";
 import styles from "./Header.module.css";
 
@@ -5,7 +6,10 @@ interface HeaderProps {
   cartItemsCount: number;
   onOpenCart: () => void;
 }
+
 export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
+  const searchQuery = useSearchStore((state) => state.searchQuery);
+  const setSearchQuery = useSearchStore((state) => state.setSearchQuery);
   return (
     <header className={styles.headerWrapper}>
       <div className="container">
@@ -33,7 +37,9 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
             <div className={styles.searchContainer}>
               <input
                 type="text"
-                placeholder="Пошук..."
+                placeholder="Search figures..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className={styles.searchInput}
               />
               <Search size={20} className={styles.searchIcon} />
