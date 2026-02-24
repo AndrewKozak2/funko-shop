@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useCartStore } from "../../store/cartStore";
 import { X, Minus, Plus, Trash2, ShoppingBag, CreditCard } from "lucide-react";
 import styles from "./Cart.module.css";
@@ -16,6 +17,30 @@ export function Cart({ isOpen, onCloseCart }: CartProps) {
   const totalPrice = cartItems
     .reduce((sum, item) => sum + item.product.price * item.quantity, 0)
     .toFixed(2);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onCloseCart();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onCloseCart]);
   return (
     <>
       <div
@@ -28,7 +53,7 @@ export function Cart({ isOpen, onCloseCart }: CartProps) {
         <div className={styles.header}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <ShoppingBag size={24} />
-            <h2>Кошик</h2>
+            <h2>Cart</h2>
           </div>
           <button className={styles.closeButton} onClick={onCloseCart}>
             <X size={24} />
@@ -38,7 +63,7 @@ export function Cart({ isOpen, onCloseCart }: CartProps) {
           {cartItems.length === 0 && (
             <div className={styles.emptyState}>
               <ShoppingBag size={48} opacity={0.2} />
-              <p>Тут поки що порожньо...</p>
+              <p>Your cart is empty...</p>
             </div>
           )}
 
@@ -78,7 +103,7 @@ export function Cart({ isOpen, onCloseCart }: CartProps) {
         {cartItems.length > 0 && (
           <div className={styles.footer}>
             <div className={styles.totalRow}>
-              <span>Разом:</span>
+              <span>Total:</span>
               <span>${totalPrice}</span>
             </div>
 
@@ -90,7 +115,7 @@ export function Cart({ isOpen, onCloseCart }: CartProps) {
               }}
             >
               <CreditCard size={20} />
-              Оформити замовлення
+              Place an order
             </button>
           </div>
         )}
