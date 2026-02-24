@@ -11,7 +11,7 @@ export function Hero() {
             <button className={styles.preOrderBtn}>Pre-Order Now</button>
           </div>
           <div className={styles.imageSide}>
-            <img src="././src/assets/iron.png" alt="Iron Man" />
+            <img src="/assets/iron.png" alt="Iron Man" />
           </div>
         </div>
       </div>
