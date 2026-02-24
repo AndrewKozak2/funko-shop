@@ -1,0 +1,31 @@
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.loadMoreContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  width: 100%;
+}
+
+.loadMoreBtn {
+  padding: 12px 32px;
+  font-size: 1rem;
+  background-color: transparent;
+  border: 1px solid #00f6ff;
+  border-radius: 8px;
+  color: #00f6ff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.loadMoreBtn:hover {
+  background-color: #00f6ff;
+  color: #0f172a;
+  box-shadow: 0 0 20px rgba(0, 246, 255, 0.4);
+}

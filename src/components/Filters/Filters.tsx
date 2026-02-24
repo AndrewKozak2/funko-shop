@@ -20,7 +20,7 @@ export function Filters({
       <h2 className={styles.title}>Filter</h2>
       <div className={styles.filterGroup}>
         <h3 className={styles.groupTitle}>Collection</h3>
-        {["Harry Potter", "Star Wars", "Marvel", "Formula 1"].map((name) => (
+        {["Harry Potter", "Star Wars", "Marvel", "Formula 1", "One Piece"].map((name) => (
           <label key={name} className={styles.checkboxLabel}>
             <input
               type="checkbox"

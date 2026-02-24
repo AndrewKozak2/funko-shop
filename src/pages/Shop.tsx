@@ -1,10 +1,11 @@
 import { useSearchStore } from "../store/searchStore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { mockProducts } from "../data/products";
 import { Hero } from "../components/Hero/Hero";
 import { Filters } from "../components/Filters/Filters";
 import { ProductCard } from "../components/ProductCard/ProductCard";
 import { useCartStore } from "../store/cartStore";
+import styles from "./Shop.module.css";
 
 export function Shop() {
   const addToCart = useCartStore((state) => state.addToCart);
@@ -12,6 +13,11 @@ export function Shop() {
 
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
   const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
+  const [visibleCount, setVisibleCount] = useState(8);
+
+  useEffect(() => {
+    setVisibleCount(8);
+  }, [priceRange, selectedCollections, searchQuery]);
 
   const filteredProducts = mockProducts.filter((product) => {
     const isWithinPrice =
@@ -27,6 +33,7 @@ export function Shop() {
 
     return isWithinPrice && isWithinCollection && isMatchingSearch;
   });
+  const visibleProducts = filteredProducts.slice(0, visibleCount);
 
   return (
     <>
@@ -47,15 +54,27 @@ export function Shop() {
               }}
             />
           </aside>
-          <main className="product-grid">
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={addToCart}
-              />
-            ))}
-          </main>
+          <div className={styles.mainContent}>
+            <main className="product-grid">
+              {visibleProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onAddToCart={addToCart}
+                />
+              ))}
+            </main>
+            {visibleCount < filteredProducts.length && (
+              <div className={styles.loadMoreContainer}>
+                <button
+                  className={styles.loadMoreBtn}
+                  onClick={() => setVisibleCount((prev) => prev + 4)}
+                >
+                  Показати ще
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </>
