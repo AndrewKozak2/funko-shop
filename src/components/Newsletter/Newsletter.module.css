@@ -70,3 +70,24 @@
   color: #00f6ff;
   box-shadow: 0 0 20px rgba(0, 246, 255, 0.4);
 }
+
+@media (max-width: 768px) {
+  .card {
+    padding: 40px 20px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .form {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .input,
+  .submitBtn {
+    width: 100%;
+    max-width: 100%;
+  }
+}

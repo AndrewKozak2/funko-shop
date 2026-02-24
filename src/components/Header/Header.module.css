@@ -103,3 +103,67 @@
   top: -5px;
   right: -10px;
 }
+
+/* --- СТИЛІ ДЛЯ МОБІЛЬНИХ ЕЛЕМЕНТІВ (за замовчуванням сховані на десктопі) --- */
+
+.burgerBtn {
+  display: none; /* Ховаємо бургер на великих екранах */
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+}
+
+@media (max-width: 768px) {
+  .navigation {
+    display: none;
+  }
+  .headerContent {
+    flex-wrap: wrap;
+  }
+
+  .searchContainer {
+    order: 3;
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .searchInput {
+    width: 100%;
+  }
+
+  .burgerBtn {
+    display: block;
+  }
+
+  .mobileNav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #0f172a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 30px 20px;
+    border-top: 1px solid #334155;
+    border-bottom: 1px solid #334155;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+  }
+
+  .mobileNav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .mobileNav a:hover {
+    color: #00f6ff;
+  }
+}

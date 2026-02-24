@@ -5,6 +5,8 @@ import { Cart } from "./components/Cart/Cart";
 import { Routes, Route } from "react-router-dom";
 import { Shop } from "./pages/Shop";
 import { ProductPage } from "./pages/ProductPage";
+import { Footer } from "./components/Footer/Footer";
+import { ScrollToTop } from "./components/ScrollToTop";
 import "./App.css";
 
 function App() {
@@ -16,6 +18,7 @@ function App() {
 
   return (
     <div>
+      <ScrollToTop />
       <Header
         cartItemsCount={totalItems}
         onOpenCart={() => setIsCartOpen(true)}
@@ -27,6 +30,7 @@ function App() {
         </Routes>
       </main>
       <Cart isOpen={isCartOpen} onCloseCart={() => setIsCartOpen(false)} />
+      <Footer />
     </div>
   );
 }

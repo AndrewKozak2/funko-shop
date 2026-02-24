@@ -35,3 +35,10 @@
   color: #0f172a;
   box-shadow: 0 0 20px rgba(0, 246, 255, 0.4);
 }
+
+@media (max-width: 768px) {
+  .stickySidebar {
+    position: static; 
+    width: 100%;
+  }
+}

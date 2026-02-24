@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useSearchStore } from "../../store/searchStore";
-import { ShoppingCart, Search } from "lucide-react";
+import { ShoppingCart, Search, Menu, X } from "lucide-react";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
@@ -8,6 +9,7 @@ interface HeaderProps {
 }
 
 export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const searchQuery = useSearchStore((state) => state.searchQuery);
   const setSearchQuery = useSearchStore((state) => state.setSearchQuery);
   return (
@@ -20,10 +22,10 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
             </h1>
           </a>
           <nav className={styles.navigation}>
-            <a href="#" className={styles.navLink}>
+            <a href="#home" className={styles.navLink}>
               Home
             </a>
-            <a href="#" className={styles.navLink}>
+            <a href="#figures" className={styles.navLink}>
               Figures
             </a>
             <a href="#" className={styles.navLink}>
@@ -33,6 +35,28 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
               Sale
             </a>
           </nav>
+          <button
+            className={styles.burgerBtn}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+          {isMobileMenuOpen && (
+            <nav className={styles.mobileNav}>
+              <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>
+                Home
+              </a>
+              <a href="#figures" onClick={() => setIsMobileMenuOpen(false)}>
+                Figures
+              </a>
+              <a href="#" onClick={() => setIsMobileMenuOpen(false)}>
+                Exclusives
+              </a>
+              <a href="#" onClick={() => setIsMobileMenuOpen(false)}>
+                Sale
+              </a>
+            </nav>
+          )}
           <div className={styles.actions}>
             <div className={styles.searchContainer}>
               <input

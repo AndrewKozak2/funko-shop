@@ -38,7 +38,9 @@ export function Shop() {
 
   return (
     <>
-      <Hero />
+      <div id="home">
+        <Hero />
+      </div>
       <div className="container">
         <div className="shop-layout">
           <aside className={styles.stickySidebar}>
@@ -55,7 +57,7 @@ export function Shop() {
               }}
             />
           </aside>
-          <div className={styles.mainContent}>
+          <div className={styles.mainContent} id="figures">
             <main className="product-grid">
               {visibleProducts.map((product) => (
                 <ProductCard

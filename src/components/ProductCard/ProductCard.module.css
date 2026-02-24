@@ -53,3 +53,20 @@
   color: #0b1524;
   box-shadow: 0 0 15px rgba(255, 138, 0, 0.5);
 }
+
+@media (max-width: 768px) {
+  .image {
+    height: 150px;
+  }
+  .title {
+    font-size: 1.1rem;
+  }
+  .price {
+    font-size: 0.9rem;
+  }
+
+  .button {
+    padding: 0.4rem;
+    font-size: 0.8em;
+  }
+}
