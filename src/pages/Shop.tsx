@@ -5,6 +5,7 @@ import { Hero } from "../components/Hero/Hero";
 import { Filters } from "../components/Filters/Filters";
 import { ProductCard } from "../components/ProductCard/ProductCard";
 import { useCartStore } from "../store/cartStore";
+import { Newsletter } from "../components/Newsletter/Newsletter";
 import styles from "./Shop.module.css";
 
 export function Shop() {
@@ -40,7 +41,7 @@ export function Shop() {
       <Hero />
       <div className="container">
         <div className="shop-layout">
-          <aside>
+          <aside className={styles.stickySidebar}>
             <Filters
               selectedCollection={selectedCollections}
               priceRange={priceRange}
@@ -70,13 +71,14 @@ export function Shop() {
                   className={styles.loadMoreBtn}
                   onClick={() => setVisibleCount((prev) => prev + 4)}
                 >
-                  Показати ще
+                  Show More
                 </button>
               </div>
             )}
           </div>
         </div>
       </div>
+      <Newsletter />
     </>
   );
 }
