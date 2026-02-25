@@ -77,7 +77,7 @@ export function Cart({ isOpen, onCloseCart }: CartProps) {
               <div className={styles.quantityControls}>
                 <button
                   className={styles.quantityButton}
-                  onClick={() => onDecreaseQuantity(item.product.id)}
+                  onClick={() => onDecreaseQuantity(String(item.product.id))}
                 >
                   <Minus size={16} />
                 </button>
@@ -86,14 +86,14 @@ export function Cart({ isOpen, onCloseCart }: CartProps) {
 
                 <button
                   className={styles.quantityButton}
-                  onClick={() => onIncreaseQuantity(item.product.id)}
+                  onClick={() => onIncreaseQuantity(String(item.product.id))}
                 >
                   <Plus size={16} />
                 </button>
               </div>
               <button
                 className={styles.removeButton}
-                onClick={() => onRemoveItem(item.product.id)}
+                onClick={() => onRemoveItem(String(item.product.id))}
               >
                 <Trash2 size={20} />
               </button>
