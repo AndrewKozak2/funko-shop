@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { mockProducts } from "../../data/products";
 import { useCartStore } from "../../store/cartStore";
 import { ArrowLeft } from "lucide-react";
+import toast from "react-hot-toast";
 import styles from "./ProductPage.module.css";
 
 export function ProductPage() {
@@ -42,7 +43,10 @@ export function ProductPage() {
           <p className={styles.price}>${product.price}</p>
 
           <button
-            onClick={() => addToCart(product)}
+            onClick={() => {
+              addToCart(product);
+              toast.success("Product added to cart!");
+            }}
             className={styles.addToCartBtn}
           >
             Add to Cart

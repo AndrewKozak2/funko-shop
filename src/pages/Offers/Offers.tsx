@@ -1,5 +1,5 @@
 import { mockBundles } from "../../data/products";
-import { BundleCard } from "../../components/BundleCard/BundleCard"; // 🔥 Новий імпорт
+import { BundleCard } from "../../components/BundleCard/BundleCard";
 import { useCartStore } from "../../store/cartStore";
 import { Tag } from "lucide-react";
 import styles from "./Offers.module.css";

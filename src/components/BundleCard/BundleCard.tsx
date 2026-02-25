@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { type FunkoPop } from "../../types/product";
 import styles from "./BundleCard.module.css";
 
@@ -28,7 +29,13 @@ export function BundleCard({ bundle, onAddToCart }: BundleCardProps) {
             <span className={styles.price}>${bundle.price}</span>
           </div>
 
-          <button onClick={() => onAddToCart(bundle)} className={styles.button}>
+          <button
+            onClick={() => {
+              onAddToCart(bundle);
+              toast.success("Product added to cart!");
+            }}
+            className={styles.button}
+          >
             Add to Cart
           </button>
         </div>

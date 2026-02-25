@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
 import { type FunkoPop } from "../../types/product";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import styles from "./ProductCard.module.css";
 
 interface ProductCardProps {
@@ -32,7 +33,10 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           </div>
 
           <button
-            onClick={() => onAddToCart(product)}
+            onClick={() => {
+              onAddToCart(product);
+              toast.success("Product added to cart!");
+            }}
             className={styles.button}
           >
             Add to Cart

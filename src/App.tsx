@@ -10,6 +10,7 @@ import { Offers } from "./pages/Offers/Offers";
 import { Footer } from "./components/Footer/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ScrollUpButton } from "./components/ScrollUpButton/ScrollUpButton";
+import { Toaster } from "react-hot-toast";
 import "./App.css";
 
 function App() {
@@ -36,6 +37,23 @@ function App() {
       </main>
       <ScrollUpButton />
       <Cart isOpen={isCartOpen} onCloseCart={() => setIsCartOpen(false)} />
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: "#1e293b",
+            color: "#fff",
+            border: "1px solid #00f6ff",
+            padding: "16px",
+          },
+          success: {
+            iconTheme: {
+              primary: "#00f6ff",
+              secondary: "#1e293b",
+            },
+          },
+        }}
+      />
       <Footer />
     </div>
   );
