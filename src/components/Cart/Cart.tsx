@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useCartStore } from "../../store/cartStore";
 import { X, Minus, Plus, Trash2, ShoppingBag, CreditCard } from "lucide-react";
+import toast from "react-hot-toast";
 import styles from "./Cart.module.css";
 
 interface CartProps {
@@ -110,7 +111,7 @@ export function Cart({ isOpen, onCloseCart }: CartProps) {
             <button
               className={styles.checkoutButton}
               onClick={() => {
-                alert("Дякуємо! Ваше замовлення оформлено");
+                toast.success("Thank you! Your order has been placed!");
                 onCheckout();
               }}
             >
