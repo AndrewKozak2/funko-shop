@@ -28,7 +28,7 @@ export function Shop() {
 
   useEffect(() => {
     setVisibleCount(8);
-  }, [priceRange, selectedCollections, searchQuery]);
+  }, [collectionsParam, minParam, maxParam, searchQuery]);
 
   const filteredProducts = mockProducts.filter((product) => {
     const isWithinPrice =

@@ -6,6 +6,9 @@
 }
 
 .backButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
   align-self: flex-start;
   display: inline-flex;
   align-items: center;

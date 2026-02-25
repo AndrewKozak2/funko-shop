@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { mockProducts } from "../../data/products";
 import { useCartStore } from "../../store/cartStore";
 import { ArrowLeft } from "lucide-react";
@@ -6,6 +6,7 @@ import styles from "./ProductPage.module.css";
 
 export function ProductPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const addToCart = useCartStore((state) => state.addToCart);
 
@@ -24,10 +25,10 @@ export function ProductPage() {
 
   return (
     <div className={`container ${styles.pageWrapper}`}>
-      <Link to="/" className={styles.backButton}>
+      <button onClick={() => navigate(-1)} className={styles.backButton}>
         <ArrowLeft size={20} />
-        Back to Shop
-      </Link>
+        Go Back
+      </button>
       <div className={styles.productLayout}>
         <img
           src={product.imageUrl}
