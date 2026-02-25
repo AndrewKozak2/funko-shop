@@ -1,5 +1,5 @@
-import { useSearchStore } from "../store/searchStore";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { mockProducts } from "../data/products";
 import { Hero } from "../components/Hero/Hero";
 import { Filters } from "../components/Filters/Filters";
@@ -10,11 +10,21 @@ import styles from "./Shop.module.css";
 
 export function Shop() {
   const addToCart = useCartStore((state) => state.addToCart);
-  const searchQuery = useSearchStore((state) => state.searchQuery);
 
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
-  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search") || "";
+
+  const collectionsParam = searchParams.get("collections");
+  const selectedCollections = collectionsParam
+    ? collectionsParam.split(",")
+    : [];
   const [visibleCount, setVisibleCount] = useState(8);
+
+  const minParam = searchParams.get("min");
+  const maxParam = searchParams.get("max");
+  const minPrice = minParam !== null ? Number(minParam) : 0;
+  const maxPrice = maxParam !== null ? Number(maxParam) : 100;
+  const priceRange: [number, number] = [minPrice, maxPrice];
 
   useEffect(() => {
     setVisibleCount(8);
@@ -24,18 +34,45 @@ export function Shop() {
     const isWithinPrice =
       product.price >= priceRange[0] && product.price <= priceRange[1];
 
+    const matchesSearch = product.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
     const isWithinCollection =
       selectedCollections.length === 0 ||
       selectedCollections.includes(product.collection);
 
-    const isMatchingSearch = product.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-
-    return isWithinPrice && isWithinCollection && isMatchingSearch;
+    return isWithinPrice && isWithinCollection && matchesSearch;
   });
   const visibleProducts = filteredProducts.slice(0, visibleCount);
 
+  const handleCollectionChange = (collectionName: string) => {
+    setSearchParams((prev) => {
+      let newCollections = [...selectedCollections];
+      if (newCollections.includes(collectionName)) {
+        newCollections = newCollections.filter(
+          (name) => name !== collectionName,
+        );
+      } else {
+        newCollections.push(collectionName);
+      }
+
+      if (newCollections.length > 0) {
+        prev.set("collections", newCollections.join(","));
+      } else {
+        prev.delete("collections");
+      }
+      return prev;
+    });
+  };
+
+  const handlePriceChange = (value: [number, number]) => {
+    setSearchParams((prev) => {
+      prev.set("min", value[0].toString());
+      prev.set("max", value[1].toString());
+      return prev;
+    });
+  };
   return (
     <>
       <div id="home">
@@ -47,14 +84,8 @@ export function Shop() {
             <Filters
               selectedCollection={selectedCollections}
               priceRange={priceRange}
-              onPriceChange={setPriceRange}
-              onCollectionChange={(collectionName) => {
-                setSelectedCollections((prev) =>
-                  prev.includes(collectionName)
-                    ? prev.filter((item) => item !== collectionName)
-                    : [...prev, collectionName],
-                );
-              }}
+              onPriceChange={handlePriceChange}
+              onCollectionChange={handleCollectionChange}
             />
           </aside>
           <div className={styles.mainContent} id="figures">

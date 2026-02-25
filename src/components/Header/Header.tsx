@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchStore } from "../../store/searchStore";
+import { useSearchParams } from "react-router-dom";
 import { ShoppingCart, Search, Menu, X } from "lucide-react";
 import styles from "./Header.module.css";
 
@@ -10,8 +10,21 @@ interface HeaderProps {
 
 export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const searchQuery = useSearchStore((state) => state.searchQuery);
-  const setSearchQuery = useSearchStore((state) => state.setSearchQuery);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search") || "";
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+
+    setSearchParams((prev) => {
+      if (text) {
+        prev.set("search", text);
+      } else {
+        prev.delete("search");
+      }
+      return prev;
+    });
+  };
   return (
     <header className={styles.headerWrapper}>
       <div className="container">
@@ -63,7 +76,7 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
                 type="text"
                 placeholder="Search figures..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearchChange}
                 className={styles.searchInput}
               />
               <Search size={20} className={styles.searchIcon} />
