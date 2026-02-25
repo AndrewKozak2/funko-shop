@@ -9,6 +9,7 @@ import { Exclusives } from "./pages/Exclusives/Exclusives";
 import { Offers } from "./pages/Offers/Offers";
 import { Footer } from "./components/Footer/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { ScrollUpButton } from "./components/ScrollUpButton/ScrollUpButton";
 import "./App.css";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
       </main>
+      <ScrollUpButton />
       <Cart isOpen={isCartOpen} onCloseCart={() => setIsCartOpen(false)} />
       <Footer />
     </div>

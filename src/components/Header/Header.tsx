@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Search, Menu, X } from "lucide-react";
@@ -26,6 +26,17 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
       return prev;
     });
   };
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileMenuOpen]);
   return (
     <header className={styles.headerWrapper}>
       <div className="container">
@@ -58,7 +69,7 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
             </Link>
           </nav>
           <button
-            className={styles.burgerBtn}
+            className={`${styles.burgerBtn} ${isMobileMenuOpen ? styles.burgerBtnOpen : ""}`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
