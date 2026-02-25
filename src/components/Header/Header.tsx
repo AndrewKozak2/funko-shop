@@ -49,9 +49,13 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
             >
               Exclusives
             </Link>
-            <a href="#" className={styles.navLink}>
-              Sale
-            </a>
+            <Link
+              to="/offers"
+              className={styles.navLink}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Offers
+            </Link>
           </nav>
           <button
             className={styles.burgerBtn}

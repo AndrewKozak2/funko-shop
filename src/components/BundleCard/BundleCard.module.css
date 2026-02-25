@@ -1,0 +1,165 @@
+.bundleCard {
+  position: relative;
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  border: 2px solid #ff8a00;
+  border-radius: 12px;
+  padding: 16px;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+  margin: 0 auto;
+  grid-column: span 2;
+}
+
+.bundleCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(255, 138, 0, 0.15);
+}
+
+.bundleBadge {
+  position: absolute;
+  top: 12px;
+  left: -4px;
+  background: linear-gradient(45deg, #ff8a00, #ef4444);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 900;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  z-index: 10;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  transform: skewX(-10deg);
+}
+
+.imagesContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding: 30px 10px;
+  height: 300px;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 138, 0, 0.1) 0%,
+    transparent 70%
+  );
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.imagesContainer img {
+  width: 40%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.4));
+  transition: transform 0.3s ease;
+}
+
+.bundleCard:hover .imagesContainer img {
+  transform: scale(1.05);
+}
+
+.plusSign {
+  font-size: 2.5rem;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 0 15px #ff8a00;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.title {
+  color: white;
+  margin-bottom: 8px;
+  font-size: 1.3rem;
+}
+
+.collection {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.oldPrice {
+  text-decoration: line-through;
+  color: #64748b;
+  font-size: 1.2rem;
+}
+
+.price {
+  color: #ff8a00;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.button {
+  background: #ff880095;
+  border: 2px solid #ff8a00;
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background: #ff8a00;
+  color: #0b1524;
+  box-shadow: 0 0 15px rgba(255, 138, 0, 0.5);
+}
+
+@media (max-width: 850px) {
+  .bundleCard {
+    grid-column: 1 / -1;
+    max-width: 500px;
+  }
+
+  .imagesContainer {
+    height: 250px;
+  }
+}
+
+@media (max-width: 576px) {
+  .imagesContainer {
+    height: 200px;
+    padding: 15px 5px;
+  }
+  .title {
+    font-size: 1.1rem;
+  }
+  .plusSign {
+    font-size: 1.8rem;
+  }
+  .price {
+    font-size: 1.4rem;
+  }
+  .oldPrice {
+    font-size: 1rem;
+  }
+}

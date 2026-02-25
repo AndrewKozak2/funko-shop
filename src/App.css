@@ -8,8 +8,9 @@
 
 .product-grid {
   display: flex;
-  gap: 14px;
   flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
 .shop-layout {

@@ -162,3 +162,28 @@ export const mockProducts: FunkoPop[] = [
     isExclusive: false,
   },
 ];
+
+export const mockBundles: FunkoPop[] = [
+  {
+    id: "bundle-1",
+    title: "F1 Rivals: Lewis Hamilton & Max Verstappen",
+    price: 34.0,
+    originalPrice: 35.98,
+    imageUrl: "/assets/LewisHam.png",
+    bundleImages: ["/assets/LewisHam.png", "/assets/MaxVer.png"],
+    collection: "Formula 1",
+    isExclusive: false,
+    isBundle: true,
+  },
+  {
+    id: "bundle-2",
+    title: "Marvel: Thor & Hulk (Marvel New Classics)",
+    price: 26.0,
+    originalPrice: 29.98,
+    imageUrl: "/assets/Thor.png",
+    bundleImages: ["/assets/Thor.png", "/assets/Hulk(MarvelNewClassics).png"],
+    collection: "Marvel",
+    isExclusive: false,
+    isBundle: true,
+  },
+];

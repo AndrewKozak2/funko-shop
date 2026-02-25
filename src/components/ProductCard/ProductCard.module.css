@@ -1,8 +1,10 @@
 .card {
+  position: relative;
   border: 1px solid #00f6ff;
   border-radius: 12px;
   padding: 16px;
-  width: 250px;
+  width: 280px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   background-color: #1e293b;
@@ -44,17 +46,57 @@
   font-weight: 500;
   font-size: 1.1rem;
   cursor: pointer;
-  margin-top: auto;
+  width: 100%;
   transition: all 0.3s ease;
 }
-
 .button:hover {
   background-color: #ff8a00;
   color: #0b1524;
   box-shadow: 0 0 15px rgba(255, 138, 0, 0.5);
 }
 
+.badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 10;
+  background-color: #00f6ff;
+  color: #0b1524;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.imageContainer {
+  text-decoration: none;
+  display: block;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 @media (max-width: 768px) {
+  .card {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
   .image {
     height: 150px;
   }
@@ -64,7 +106,6 @@
   .price {
     font-size: 0.9rem;
   }
-
   .button {
     padding: 0.4rem;
     font-size: 0.8em;
