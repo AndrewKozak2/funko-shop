@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useLocation } from "react-router-dom";
 import { mockProducts } from "../../data/products";
 import { Hero } from "../../components/Hero/Hero";
 import { Filters } from "../../components/Filters/Filters";
@@ -73,6 +73,21 @@ export function Shop() {
       return prev;
     });
   };
+
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const id = hash.replace("#", "");
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [pathname, hash]);
+
   return (
     <>
       <div id="home">

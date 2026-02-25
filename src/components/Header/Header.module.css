@@ -104,10 +104,8 @@
   right: -10px;
 }
 
-/* --- СТИЛІ ДЛЯ МОБІЛЬНИХ ЕЛЕМЕНТІВ (за замовчуванням сховані на десктопі) --- */
-
 .burgerBtn {
-  display: none; /* Ховаємо бургер на великих екранах */
+  display: none;
   background: transparent;
   border: none;
   color: white;

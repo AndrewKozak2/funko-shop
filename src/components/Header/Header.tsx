@@ -36,12 +36,12 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
             </h1>
           </a>
           <nav className={styles.navigation}>
-            <a href="#home" className={styles.navLink}>
+            <Link to="/" className={styles.navLink}>
               Home
-            </a>
-            <a href="#figures" className={styles.navLink}>
+            </Link>
+            <Link to="/#figures" className={styles.navLink}>
               Figures
-            </a>
+            </Link>
             <Link
               to="/exclusives"
               className={styles.navLink}
@@ -65,18 +65,18 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
           </button>
           {isMobileMenuOpen && (
             <nav className={styles.mobileNav}>
-              <a href="#home" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
                 Home
-              </a>
-              <a href="#figures" onClick={() => setIsMobileMenuOpen(false)}>
+              </Link>
+              <Link to="/#figures" onClick={() => setIsMobileMenuOpen(false)}>
                 Figures
-              </a>
-              <a href="#" onClick={() => setIsMobileMenuOpen(false)}>
+              </Link>
+              <Link to="/exclusives" onClick={() => setIsMobileMenuOpen(false)}>
                 Exclusives
-              </a>
-              <a href="#" onClick={() => setIsMobileMenuOpen(false)}>
-                Sale
-              </a>
+              </Link>
+              <Link to="/offers" onClick={() => setIsMobileMenuOpen(false)}>
+                Offers
+              </Link>
             </nav>
           )}
           <div className={styles.actions}>
