@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
-import { mockProducts } from "../data/products";
-import { useCartStore } from "../store/cartStore";
+import { mockProducts } from "../../data/products";
+import { useCartStore } from "../../store/cartStore";
 import { ArrowLeft } from "lucide-react";
 import styles from "./ProductPage.module.css";
 

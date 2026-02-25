@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { mockProducts } from "../data/products";
-import { Hero } from "../components/Hero/Hero";
-import { Filters } from "../components/Filters/Filters";
-import { ProductCard } from "../components/ProductCard/ProductCard";
-import { useCartStore } from "../store/cartStore";
-import { Newsletter } from "../components/Newsletter/Newsletter";
+import { mockProducts } from "../../data/products";
+import { Hero } from "../../components/Hero/Hero";
+import { Filters } from "../../components/Filters/Filters";
+import { ProductCard } from "../../components/ProductCard/ProductCard";
+import { useCartStore } from "../../store/cartStore";
+import { Newsletter } from "../../components/Newsletter/Newsletter";
 import styles from "./Shop.module.css";
 
 export function Shop() {

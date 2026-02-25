@@ -1,0 +1,47 @@
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(90deg, #1e293b90 0%, transparent 100%);
+  border-left: 6px solid #ff8a00;
+  padding: 20px 30px;
+  border-radius: 8px;
+  margin-bottom: 40px;
+}
+
+.icon {
+  color: #ff8a00;
+  filter: drop-shadow(0 0 10px rgba(255, 138, 0, 0.5));
+}
+
+.pageTitle {
+  color: white;
+  margin: 0;
+  font-size: 2.5rem;
+  text-shadow: 0 0 15px rgba(255, 138, 0, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 80px 20px;
+  background-color: #1e293b50;
+  border: 1px dashed #334155;
+  border-radius: 16px;
+}
+
+.emptyState h2 {
+  color: white;
+  margin-bottom: 12px;
+  font-size: 2rem;
+}
+
+.emptyState p {
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+.centeredGrid {
+  justify-content: center;
+}

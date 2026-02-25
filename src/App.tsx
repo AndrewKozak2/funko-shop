@@ -3,8 +3,9 @@ import { useState } from "react";
 import { Header } from "./components/Header/Header";
 import { Cart } from "./components/Cart/Cart";
 import { Routes, Route } from "react-router-dom";
-import { Shop } from "./pages/Shop";
-import { ProductPage } from "./pages/ProductPage";
+import { Shop } from "./pages/Shop/Shop";
+import { ProductPage } from "./pages/ProductPage/ProductPage";
+import { Exclusives } from "./pages/Exclusives/Exclusives";
 import { Footer } from "./components/Footer/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import "./App.css";
@@ -26,6 +27,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Shop />}></Route>
+          <Route path="/exclusives" element={<Exclusives />} />
           <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
       </main>

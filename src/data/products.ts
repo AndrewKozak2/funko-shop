@@ -71,7 +71,7 @@ export const mockProducts: FunkoPop[] = [
     price: 19.99,
     imageUrl: "/assets/PremiumSpiderMan.png",
     collection: "Marvel",
-    isExclusive: true,
+    isExclusive: false,
   },
   {
     id: "10",

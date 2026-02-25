@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ShoppingCart, Search, Menu, X } from "lucide-react";
 import styles from "./Header.module.css";
 
@@ -41,9 +42,13 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
             <a href="#figures" className={styles.navLink}>
               Figures
             </a>
-            <a href="#" className={styles.navLink}>
+            <Link
+              to="/exclusives"
+              className={styles.navLink}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
               Exclusives
-            </a>
+            </Link>
             <a href="#" className={styles.navLink}>
               Sale
             </a>
