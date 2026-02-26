@@ -17,11 +17,11 @@ export function Exclusives() {
       </div>
       {exclusiveProducts.length === 0 ? (
         <div className={styles.emptyState}>
-          <h2>Oops! All exclusives are sold out! 🏃‍♂️💨</h2>
+          <h2>Oops! All exclusives are sold out!</h2>
           <p>Check back later for new rare drops.</p>
         </div>
       ) : (
-        <div className={`product-grid ${styles.centeredGrid}`}>
+        <div className="product-grid" style={{ justifyContent: "center" }}>
           {exclusiveProducts.map((product) => (
             <ProductCard
               key={product.id}

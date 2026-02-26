@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { mockProducts } from "../../data/products";
 import { useCartStore } from "../../store/cartStore";
+import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { ArrowLeft } from "lucide-react";
 import toast from "react-hot-toast";
 import styles from "./ProductPage.module.css";
@@ -23,6 +24,10 @@ export function ProductPage() {
       </div>
     );
   }
+
+  const relatedProducts = mockProducts
+    .filter((p) => p.collection === product.collection && p.id !== product.id)
+    .slice(0, 4);
 
   return (
     <div className={`container ${styles.pageWrapper}`}>
@@ -53,6 +58,20 @@ export function ProductPage() {
           </button>
         </div>
       </div>
+      {relatedProducts.length > 0 && (
+        <div className={styles.relatedSection}>
+          <h2 className={styles.relatedTitle}>You Might Also Like</h2>
+          <div className={styles.relatedGrid}>
+            {relatedProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={addToCart}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

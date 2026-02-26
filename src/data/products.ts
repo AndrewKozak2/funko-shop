@@ -161,6 +161,47 @@ export const mockProducts: FunkoPop[] = [
     collection: "One Piece",
     isExclusive: false,
   },
+  {
+    id: "21",
+    title: "Luke Skywalker(Deleted Scenes)",
+    price: 14.99,
+    imageUrl: "/assets/Luke_Skywalker_(Deleted_Scenes).png",
+    collection: "Star Wars",
+    isExclusive: false,
+  },
+  {
+    id: "22",
+    title: "Kylo Ren(The First Order)",
+    price: 14.99,
+    imageUrl: "/assets/Kylo_Ren_(The_First_Order).png",
+    collection: "Star Wars",
+    isExclusive: false,
+  },
+
+  {
+    id: "23",
+    title: "Severus Snape with Patronus",
+    price: 14.99,
+    imageUrl: "/assets/Severus_Snape_with_Patronus.png",
+    collection: "Harry Potter",
+    isExclusive: false,
+  },
+  {
+    id: "24",
+    title: "Kuro",
+    price: 14.99,
+    imageUrl: "/assets/Kuro.png",
+    collection: "One Piece",
+    isExclusive: false,
+  },
+  {
+    id: "25",
+    title: "Thanos",
+    price: 14.99,
+    imageUrl: "/assets/Thanos.png",
+    collection: "Marvel",
+    isExclusive: false,
+  },
 ];
 
 export const mockBundles: FunkoPop[] = [

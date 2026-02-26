@@ -1,5 +1,5 @@
 export interface FunkoPop {
-  id: number | string;
+  id: string;
   title: string;
   price: number;
   imageUrl: string;
