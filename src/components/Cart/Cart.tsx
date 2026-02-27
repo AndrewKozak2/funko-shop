@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useCartStore } from "../../store/cartStore";
+import { useNavigate } from "react-router-dom";
 import { X, Minus, Plus, Trash2, ShoppingBag, CreditCard } from "lucide-react";
-import toast from "react-hot-toast";
 import styles from "./Cart.module.css";
 
 interface CartProps {
@@ -14,7 +14,7 @@ export function Cart({ isOpen, onCloseCart }: CartProps) {
   const onRemoveItem = useCartStore((state) => state.removeFromCart);
   const onIncreaseQuantity = useCartStore((state) => state.increaseQuantity);
   const onDecreaseQuantity = useCartStore((state) => state.decreaseQuantity);
-  const onCheckout = useCartStore((state) => state.clearCart);
+  const navigate = useNavigate();
   const totalPrice = cartItems
     .reduce((sum, item) => sum + item.product.price * item.quantity, 0)
     .toFixed(2);
@@ -78,7 +78,7 @@ export function Cart({ isOpen, onCloseCart }: CartProps) {
               <div className={styles.quantityControls}>
                 <button
                   className={styles.quantityButton}
-                  onClick={() => onDecreaseQuantity(String(item.product.id))}
+                  onClick={() => onDecreaseQuantity(item.product.id)}
                 >
                   <Minus size={16} />
                 </button>
@@ -87,14 +87,14 @@ export function Cart({ isOpen, onCloseCart }: CartProps) {
 
                 <button
                   className={styles.quantityButton}
-                  onClick={() => onIncreaseQuantity(String(item.product.id))}
+                  onClick={() => onIncreaseQuantity(item.product.id)}
                 >
                   <Plus size={16} />
                 </button>
               </div>
               <button
                 className={styles.removeButton}
-                onClick={() => onRemoveItem(String(item.product.id))}
+                onClick={() => onRemoveItem(item.product.id)}
               >
                 <Trash2 size={20} />
               </button>
@@ -111,12 +111,12 @@ export function Cart({ isOpen, onCloseCart }: CartProps) {
             <button
               className={styles.checkoutButton}
               onClick={() => {
-                toast.success("Thank you! Your order has been placed!");
-                onCheckout();
+                onCloseCart();
+                navigate("/checkout");
               }}
             >
               <CreditCard size={20} />
-              Place an order
+              Go to Checkout
             </button>
           </div>
         )}
