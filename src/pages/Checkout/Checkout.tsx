@@ -39,8 +39,14 @@ export function Checkout() {
       return;
     }
     toast.success("Order successfully placed!");
+    const orderNumber = Math.floor(100000 + Math.random() * 900000);
+    navigate("/success", {
+      state: {
+        orderId: `FNK-${orderNumber}`,
+        total: totalPrice.toFixed(2),
+      },
+    });
     clearCart();
-    navigate("/");
   };
   if (cart.length === 0) {
     return (
@@ -92,21 +98,29 @@ export function Checkout() {
       </div>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Full Name</label>
+          <label htmlFor="name" className={styles.label}>
+            Full Name
+          </label>
           <input
+            id="name"
             type="text"
+            required
             className={styles.input}
-            placeholder="Full Name"
+            placeholder="John Doe"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
         </div>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Email</label>
+          <label htmlFor="email" className={styles.label}>
+            Email
+          </label>
           <input
+            id="email"
             type="email"
+            required
             className={styles.input}
-            placeholder="Email..."
+            placeholder="john@example.com"
             value={formData.email}
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
@@ -114,11 +128,15 @@ export function Checkout() {
           />
         </div>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Your Number</label>
+          <label htmlFor="phone" className={styles.label}>
+            Your Number
+          </label>
           <input
+            id="phone"
             type="tel"
+            required
             className={styles.input}
-            placeholder="+380..."
+            placeholder="+380 50 123 45 67"
             value={formData.phone}
             onChange={(e) =>
               setFormData({ ...formData, phone: e.target.value })
@@ -126,11 +144,15 @@ export function Checkout() {
           />
         </div>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Delivery address</label>
+          <label htmlFor="address" className={styles.label}>
+            Delivery address
+          </label>
           <input
+            id="address"
             type="text"
+            required
             className={styles.input}
-            placeholder="Address"
+            placeholder="Kyiv, Khreshchatyk st. 1, apt 2"
             value={formData.address}
             onChange={(e) =>
               setFormData({ ...formData, address: e.target.value })
