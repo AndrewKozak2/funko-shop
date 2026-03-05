@@ -8,6 +8,7 @@ import { ProductPage } from "./pages/ProductPage/ProductPage";
 import { Exclusives } from "./pages/Exclusives/Exclusives";
 import { Offers } from "./pages/Offers/Offers";
 import { Checkout } from "./pages/Checkout/Checkout";
+import { Wishlist } from "./pages/Wishlist/Wishlist";
 import { Success } from "./pages/Success/Success";
 import { Footer } from "./components/Footer/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
@@ -34,6 +35,7 @@ function App() {
           <Route path="/" element={<Shop />}></Route>
           <Route path="/exclusives" element={<Exclusives />} />
           <Route path="/offers" element={<Offers />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/success" element={<Success />} />
           <Route path="/product/:id" element={<ProductPage />} />

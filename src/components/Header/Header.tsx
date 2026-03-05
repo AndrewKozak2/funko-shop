@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Search, Menu, X } from "lucide-react";
+import { ShoppingCart, Search, Menu, X, Heart } from "lucide-react";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
@@ -88,6 +88,9 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
               <Link to="/offers" onClick={() => setIsMobileMenuOpen(false)}>
                 Offers
               </Link>
+              <Link to="/wishlist" onClick={() => setIsMobileMenuOpen(false)}>
+                Wishlist
+              </Link>
             </nav>
           )}
           <div className={styles.actions}>
@@ -101,7 +104,9 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
               />
               <Search size={20} className={styles.searchIcon} />
             </div>
-
+            <Link to="/wishlist" className={styles.cartBtn}>
+              <Heart size={24} className={styles.shopingCart} />
+            </Link>
             <div>
               <button className={styles.cartBtn} onClick={onOpenCart}>
                 <ShoppingCart size={24} className={styles.shopingCart} />
