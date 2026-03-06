@@ -1,14 +1,38 @@
-import { mockProducts } from "../../data/products";
+import { useEffect, useMemo } from "react";
 import { ProductCard } from "../../components/ProductCard/ProductCard";
+import { useProductStore } from "../../store/productStore";
 import { useCartStore } from "../../store/cartStore";
 import { Crown } from "lucide-react";
 import styles from "./Exclusives.module.css";
 
 export function Exclusives() {
   const addToCart = useCartStore((state) => state.addToCart);
-  const exclusiveProducts = mockProducts.filter(
-    (product) => product.isExclusive === true,
-  );
+
+  const { products, fetchProducts, isLoading } = useProductStore();
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+  const exclusiveProducts = useMemo(() => {
+    return products.filter((product) => product.isExclusive === true);
+  }, [products]);
+
+  if (isLoading) {
+    return (
+      <div
+        className="container"
+        style={{
+          minHeight: "80vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          color: "white",
+        }}
+      >
+        <h2>Loading Exclusives...</h2>
+      </div>
+    );
+  }
   return (
     <div className="container" style={{ padding: "40px 20px 100px 20px" }}>
       <div className={styles.banner}>

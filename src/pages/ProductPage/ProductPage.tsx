@@ -1,5 +1,6 @@
+import { useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { mockProducts } from "../../data/products";
+import { useProductStore } from "../../store/productStore";
 import { useCartStore } from "../../store/cartStore";
 import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { ArrowLeft } from "lucide-react";
@@ -12,7 +13,39 @@ export function ProductPage() {
 
   const addToCart = useCartStore((state) => state.addToCart);
 
-  const product = mockProducts.find((p) => p.id === id);
+  const { products, fetchProducts, isLoading } = useProductStore();
+
+  useEffect(() => {
+    if (products.length === 0) {
+      fetchProducts();
+    }
+  }, [fetchProducts, products.length]);
+  const product = useMemo(() => {
+    return products.find((p) => p.id === id || p._id === id);
+  }, [products, id]);
+
+  const relatedProducts = useMemo(() => {
+    if (!product) return [];
+    return products
+      .filter((p) => p.collection === product.collection && p.id !== product.id)
+      .slice(0, 4);
+  }, [products, product]);
+  if (isLoading) {
+    return (
+      <div
+        className="container"
+        style={{
+          minHeight: "80vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          color: "white",
+        }}
+      >
+        <h2>Loading Details...</h2>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -24,10 +57,6 @@ export function ProductPage() {
       </div>
     );
   }
-
-  const relatedProducts = mockProducts
-    .filter((p) => p.collection === product.collection && p.id !== product.id)
-    .slice(0, 4);
 
   return (
     <div className={`container ${styles.pageWrapper}`}>
