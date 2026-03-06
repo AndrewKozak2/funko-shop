@@ -1,0 +1,256 @@
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const Product = require("./models/Product");
+
+dotenv.config();
+
+const mockProducts = [
+  {
+    id: "1",
+    title: "Lewis Hamilton (Mercedes)",
+    price: 15.99,
+    imageUrl: "/assets/LewisHam.png",
+    collection: "Formula 1",
+    isExclusive: false,
+  },
+  {
+    id: "2",
+    title: "Max Verstappen (Red Bull)",
+    price: 19.99,
+    imageUrl: "/assets/MaxVer.png",
+    collection: "Formula 1",
+    isExclusive: false,
+  },
+  {
+    id: "3",
+    title: "Ayrton Senna (Lotus)",
+    price: 14.99,
+    imageUrl: "/assets/AyrtonSen.png",
+    collection: "Formula 1",
+    isExclusive: true,
+  },
+  {
+    id: "4",
+    title: "Harry Potter",
+    price: 14.99,
+    imageUrl: "/assets/HarryPot.png",
+    collection: "Harry Potter",
+    isExclusive: true,
+  },
+  {
+    id: "5",
+    title: "Captain America",
+    price: 14.99,
+    imageUrl: "/assets/CaptainAmerica.png",
+    collection: "Marvel",
+    isExclusive: false,
+  },
+  {
+    id: "6",
+    title: "Storm Trooper",
+    price: 14.99,
+    imageUrl: "/assets/StormTrooper.png",
+    collection: "Star Wars",
+    isExclusive: true,
+  },
+  {
+    id: "7",
+    title: "Max Verstappen with RB20",
+    price: 44.99,
+    imageUrl: "/assets/MaxVerInBolide.png",
+    collection: "Formula 1",
+    isExclusive: true,
+  },
+  {
+    id: "8",
+    title: "Hagrid in Animal Pelt Outfit",
+    price: 24.99,
+    imageUrl: "/assets/Hagrid.png",
+    collection: "Harry Potter",
+    isExclusive: false,
+  },
+  {
+    id: "9",
+    title: "Spider-Man",
+    price: 19.99,
+    imageUrl: "/assets/PremiumSpiderMan.png",
+    collection: "Marvel",
+    isExclusive: false,
+  },
+  {
+    id: "10",
+    title: "Monkey D. Garp (Garp Galaxy Impact)",
+    price: 14.99,
+    imageUrl: "/assets/MonkeyD_Garp(GarpGalaxyImpact).png",
+    collection: "One Piece",
+    isExclusive: true,
+  },
+  {
+    id: "11",
+    title: "Monkey D. Dragon",
+    price: 14.99,
+    imageUrl: "/assets/MonkeyD_Dragon.png",
+    collection: "One Piece",
+    isExclusive: false,
+  },
+  {
+    id: "12",
+    title: "Hulk (Marvel New Classics)",
+    price: 14.99,
+    imageUrl: "/assets/Hulk(MarvelNewClassics).png",
+    collection: "Marvel",
+    isExclusive: false,
+  },
+  {
+    id: "13",
+    title: "Kimi Antonelli",
+    price: 14.99,
+    imageUrl: "/assets/KimiAntonelli.png",
+    collection: "Formula 1",
+    isExclusive: false,
+  },
+  {
+    id: "14",
+    title: "Jumbo The Child",
+    price: 39.99,
+    imageUrl: "/assets/JumboTheChild.png",
+    collection: "Star Wars",
+    isExclusive: true,
+  },
+  {
+    id: "15",
+    title: "Lights and Sounds Darth Vader with Lightsaber",
+    price: 39.99,
+    imageUrl: "/assets/Lights_and_Sounds_Darth_Vader_with_Lightsaber.png",
+    collection: "Star Wars",
+    isExclusive: false,
+  },
+  {
+    id: "16",
+    title: "Jumbo Monkey D. Luffy with Meat",
+    price: 39.99,
+    imageUrl: "/assets/Jumbo_Monkey_D_Luffy_with_Meat.png",
+    collection: "One Piece",
+    isExclusive: true,
+  },
+  {
+    id: "17",
+    title: "Deluxe Albus Dumbledore with Fawkes",
+    price: 29.99,
+    imageUrl: "/assets/Deluxe_Albus_Dumbledore_with_Fawkes.png",
+    collection: "Harry Potter",
+    isExclusive: true,
+  },
+  {
+    id: "18",
+    title: "Harry Potter with Hedwig",
+    price: 14.99,
+    imageUrl: "/assets/Harry_Potter_with_Hedwig.png",
+    collection: "Harry Potter",
+    isExclusive: false,
+  },
+  {
+    id: "19",
+    title: "Thor",
+    price: 14.99,
+    imageUrl: "/assets/Thor.png",
+    collection: "Marvel",
+    isExclusive: false,
+  },
+  {
+    id: "20",
+    title: "Sabo Attacking with Pipe",
+    price: 14.99,
+    imageUrl: "/assets/Sabo_Attacking_with_Pipe.png",
+    collection: "One Piece",
+    isExclusive: false,
+  },
+  {
+    id: "21",
+    title: "Luke Skywalker(Deleted Scenes)",
+    price: 14.99,
+    imageUrl: "/assets/Luke_Skywalker_(Deleted_Scenes).png",
+    collection: "Star Wars",
+    isExclusive: false,
+  },
+  {
+    id: "22",
+    title: "Kylo Ren(The First Order)",
+    price: 14.99,
+    imageUrl: "/assets/Kylo_Ren_(The_First_Order).png",
+    collection: "Star Wars",
+    isExclusive: false,
+  },
+  {
+    id: "23",
+    title: "Severus Snape with Patronus",
+    price: 14.99,
+    imageUrl: "/assets/Severus_Snape_with_Patronus.png",
+    collection: "Harry Potter",
+    isExclusive: false,
+  },
+  {
+    id: "24",
+    title: "Kuro",
+    price: 14.99,
+    imageUrl: "/assets/Kuro.png",
+    collection: "One Piece",
+    isExclusive: false,
+  },
+  {
+    id: "25",
+    title: "Thanos",
+    price: 14.99,
+    imageUrl: "/assets/Thanos.png",
+    collection: "Marvel",
+    isExclusive: false,
+  },
+];
+
+const mockBundles = [
+  {
+    id: "bundle-1",
+    title: "F1 Rivals: Lewis Hamilton & Max Verstappen",
+    price: 34.0,
+    originalPrice: 35.98,
+    imageUrl: "/assets/LewisHam.png",
+    bundleImages: ["/assets/LewisHam.png", "/assets/MaxVer.png"],
+    collection: "Formula 1",
+    isExclusive: false,
+    isBundle: true,
+  },
+  {
+    id: "bundle-2",
+    title: "Marvel: Thor & Hulk (Marvel New Classics)",
+    price: 26.0,
+    originalPrice: 29.98,
+    imageUrl: "/assets/Thor.png",
+    bundleImages: ["/assets/Thor.png", "/assets/Hulk(MarvelNewClassics).png"],
+    collection: "Marvel",
+    isExclusive: false,
+    isBundle: true,
+  },
+];
+
+const allProducts = [...mockProducts, ...mockBundles];
+
+const seedDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log(" Connected to MongoDB");
+
+    await Product.deleteMany({});
+    console.log(" Old products removed");
+
+    await Product.insertMany(allProducts);
+    console.log(` Added ${allProducts.length} products to database!`);
+
+    mongoose.connection.close();
+    console.log(" Connection closed");
+  } catch (error) {
+    console.error(" Error:", error);
+    mongoose.connection.close();
+  }
+};
+
+seedDB();

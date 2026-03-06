@@ -4,16 +4,22 @@ import { Hero } from "../../components/Hero/Hero";
 import { Filters } from "../../components/Filters/Filters";
 import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { useCartStore } from "../../store/cartStore";
+import { useProductStore } from "../../store/productStore";
 import { Newsletter } from "../../components/Newsletter/Newsletter";
 import { useShop } from "./useShop";
 import styles from "./Shop.module.css";
 
 export function Shop() {
   const addToCart = useCartStore((state) => state.addToCart);
+  const { fetchProducts, isLoading, error } = useProductStore();
 
   const { products, totalCount, visibleCount, filters, actions } = useShop();
 
   const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   useEffect(() => {
     if (hash) {
@@ -26,6 +32,29 @@ export function Shop() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [pathname, hash]);
+
+  if (isLoading) {
+    return (
+      <div
+        className="container"
+        style={{ paddingTop: "100px", textAlign: "center" }}
+      >
+        <h2 style={{ color: "white" }}>Loading products from Server... 🚀</h2>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div
+        className="container"
+        style={{ paddingTop: "100px", textAlign: "center" }}
+      >
+        <h2 style={{ color: "#ef4444" }}>Error: {error}</h2>
+        <p>Make sure the server is running on port 5000</p>
+      </div>
+    );
+  }
 
   return (
     <>

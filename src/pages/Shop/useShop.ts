@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { mockProducts } from "../../data/products";
+import { useProductStore } from "../../store/productStore";
 
 export function useShop() {
+  const { products: serverProducts } = useProductStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
   const sortParam = searchParams.get("sort") || "default";
@@ -28,7 +29,7 @@ export function useShop() {
   }, [collectionsParam, minParam, maxParam, searchQuery, sortParam]);
 
   const filteredProducts = useMemo(() => {
-    return mockProducts.filter((product) => {
+    return serverProducts.filter((product) => {
       const isWithinPrice =
         product.price >= priceRange[0] && product.price <= priceRange[1];
 
@@ -42,7 +43,7 @@ export function useShop() {
 
       return isWithinPrice && isWithinCollection && matchesSearch;
     });
-  }, [priceRange, searchQuery, selectedCollections]);
+  }, [priceRange, searchQuery, selectedCollections, serverProducts]);
 
   const sortedProducts = useMemo(() => {
     return [...filteredProducts].sort((a, b) => {
