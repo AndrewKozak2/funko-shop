@@ -1,91 +1,27 @@
-import React, { useState } from "react";
-import { useCartStore } from "../../store/cartStore";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { customStyles } from "./selectStyles";
+import AsyncSelect from "react-select/async";
+import Select from "react-select";
+import { type City, type Warehouse } from "../../services/novaPoshta";
 import styles from "./Checkout.module.css";
-
-interface CheckoutFormData {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-}
+import { useCheckout } from "../../hooks/useCheckout";
 
 export function Checkout() {
-  const [formData, setFormData] = useState<CheckoutFormData>({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const cart = useCartStore((state) => state.cart);
-  const clearCart = useCartStore((state) => state.clearCart);
   const navigate = useNavigate();
-  const totalPrice = cart.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0,
-  );
-
-  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.phone ||
-      !formData.address
-    ) {
-      toast.error("Please fill in all fields");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const orderPayload = {
-        customer: formData,
-        items: cart.map((item) => ({
-          productId: item.product._id || item.product.id,
-          title: item.product.title,
-          price: item.product.price,
-          quantity: item.quantity,
-        })),
-        totalPrice: totalPrice,
-      };
-
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
-
-      const response = await fetch(`${apiUrl}/orders`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderPayload),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to place order");
-      }
-
-      const savedOrder = await response.json();
-      toast.success("Order successfully placed!");
-      navigate("/success", {
-        state: {
-          orderId: savedOrder._id,
-          total: totalPrice.toFixed(2),
-        },
-      });
-
-      clearCart();
-    } catch (error) {
-      console.error("Checkout error:", error);
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
+  const {
+    cart,
+    totalPrice,
+    formData,
+    setFormData,
+    warehouses,
+    selectedCity,
+    setSelectedCity,
+    selectedWarehouse,
+    setSelectedWarehouse,
+    handleSubmit,
+    isSubmitting,
+    loadCities,
+  } = useCheckout();
   if (cart.length === 0) {
     return (
       <div
@@ -185,20 +121,40 @@ export function Checkout() {
           />
         </div>
         <div className={styles.inputGroup}>
-          <label htmlFor="address" className={styles.label}>
-            Delivery address
-          </label>
-          <input
-            id="address"
-            type="text"
+          <label className={styles.label}>City (Nova Poshta)</label>
+          <AsyncSelect
+            cacheOptions
+            defaultOptions
+            loadOptions={loadCities}
+            onChange={(val) => {
+              setSelectedCity(val as City);
+              if (!val) {
+                setSelectedWarehouse(null);
+              }
+            }}
+            getOptionLabel={(e: City) => e.Present}
+            getOptionValue={(e: City) => e.Ref}
+            placeholder="Start typing your city..."
+            styles={customStyles}
             required
-            className={styles.input}
-            placeholder="Kyiv, Khreshchatyk st. 1, apt 2"
-            value={formData.address}
-            onChange={(e) =>
-              setFormData({ ...formData, address: e.target.value })
+            isClearable={true}
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Warehouse</label>
+          <Select
+            options={warehouses}
+            onChange={(val) => setSelectedWarehouse(val as Warehouse)}
+            getOptionLabel={(e: Warehouse) => e.Description}
+            getOptionValue={(e: Warehouse) => e.Ref}
+            placeholder={
+              selectedCity ? "Select warehouse..." : "Select a city first"
             }
-            disabled={isSubmitting}
+            isDisabled={!selectedCity}
+            styles={customStyles}
+            value={selectedWarehouse}
+            required
           />
         </div>
 
