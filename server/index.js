@@ -16,6 +16,16 @@ mongoose
   .then(() => console.log(" MongoDB connected successfully!"))
   .catch((err) => console.log(" MongoDB connection error:", err));
 
+const adminAuth = (req, res, next) => {
+  const password = req.headers["x-admin-key"];
+  const correctPassword = process.env.ADMIN_SECRET;
+
+  if (!password || password !== correctPassword) {
+    return res.status(403).json({ message: "Access denied: Invalid password" });
+  }
+  next();
+};
+
 app.get("/", (req, res) => {
   res.send("Funko Store API is running...");
 });
@@ -25,6 +35,16 @@ app.get("/products", async (req, res) => {
     const products = await Product.find();
     res.json(products);
   } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+app.get("/orders", adminAuth, async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
     res.status(500).json({ message: "Server Error" });
   }
 });

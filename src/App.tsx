@@ -10,6 +10,7 @@ import { Offers } from "./pages/Offers/Offers";
 import { Checkout } from "./pages/Checkout/Checkout";
 import { Wishlist } from "./pages/Wishlist/Wishlist";
 import { Success } from "./pages/Success/Success";
+import { Admin } from "./pages/Admin/Admin";
 import { Footer } from "./components/Footer/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ScrollUpButton } from "./components/ScrollUpButton/ScrollUpButton";
@@ -38,6 +39,7 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/success" element={<Success />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
       </main>
