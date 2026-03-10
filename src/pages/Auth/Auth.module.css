@@ -1,0 +1,160 @@
+/* Робимо на весь екран і фіксуємо фон */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #0b1524;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Анімовані неонові сфери на фоні */
+.orb1,
+.orb2 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.orb1 {
+  width: 400px;
+  height: 400px;
+  background: rgba(0, 246, 255, 0.4); /* Блакитний */
+  top: -10%;
+  left: -10%;
+  animation: floatOrb 10s ease-in-out infinite alternate;
+}
+
+.orb2 {
+  width: 350px;
+  height: 350px;
+  background: rgba(255, 138, 0, 0.3); /* Помаранчевий */
+  bottom: -10%;
+  right: -5%;
+  animation: floatOrb 12s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes floatOrb {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(100px, 50px) scale(1.2);
+  }
+}
+
+/* Ефект матового скла (Glassmorphism) для форми */
+.authBox {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 40px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 420px;
+  z-index: 1; /* Ставимо поверх сфер */
+  position: relative;
+}
+
+.backBtn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+  margin-bottom: 30px;
+  transition: color 0.2s;
+}
+
+.backBtn:hover {
+  color: #00f6ff;
+}
+
+.title {
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid #475569;
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  border-color: #00f6ff;
+  box-shadow: 0 0 0 4px rgba(0, 246, 255, 0.1);
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 16px;
+  background: #ff880095;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.submitBtn:hover {
+  background-color: #ff8a00;
+  color: #0b1524;
+  box-shadow: 0 0 15px rgba(255, 138, 0, 0.5);
+}
+
+.toggleText {
+  color: #94a3b8;
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.95rem;
+}
+
+.toggleLink {
+  color: #00f6ff;
+  cursor: pointer;
+  margin-left: 5px;
+  font-weight: 600;
+  transition: text-shadow 0.2s;
+}
+
+.toggleLink:hover {
+  text-shadow: 0 0 10px rgba(0, 246, 255, 0.5);
+}

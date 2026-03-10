@@ -2,7 +2,7 @@ import { useCartStore } from "./store/cartStore";
 import { useState } from "react";
 import { Header } from "./components/Header/Header";
 import { Cart } from "./components/Cart/Cart";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Shop } from "./pages/Shop/Shop";
 import { ProductPage } from "./pages/ProductPage/ProductPage";
 import { Exclusives } from "./pages/Exclusives/Exclusives";
@@ -11,6 +11,7 @@ import { Checkout } from "./pages/Checkout/Checkout";
 import { Wishlist } from "./pages/Wishlist/Wishlist";
 import { Success } from "./pages/Success/Success";
 import { Admin } from "./pages/Admin/Admin";
+import { Auth } from "./pages/Auth/Auth";
 import { Footer } from "./components/Footer/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ScrollUpButton } from "./components/ScrollUpButton/ScrollUpButton";
@@ -21,30 +22,38 @@ function App() {
   const cart = useCartStore((state) => state.cart);
 
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const location = useLocation();
+  const isAuthPage = location.pathname === "/auth";
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div>
       <ScrollToTop />
-      <Header
-        cartItemsCount={totalItems}
-        onOpenCart={() => setIsCartOpen(true)}
-      />
+      {!isAuthPage && (
+        <Header
+          cartItemsCount={totalItems}
+          onOpenCart={() => setIsCartOpen(true)}
+        />
+      )}
+
       <main>
         <Routes>
-          <Route path="/" element={<Shop />}></Route>
+          <Route path="/" element={<Shop />} />
           <Route path="/exclusives" element={<Exclusives />} />
           <Route path="/offers" element={<Offers />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/success" element={<Success />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
       </main>
-      <ScrollUpButton />
-      <Cart isOpen={isCartOpen} onCloseCart={() => setIsCartOpen(false)} />
+      {!isAuthPage && <ScrollUpButton />}
+      {!isAuthPage && (
+        <Cart isOpen={isCartOpen} onCloseCart={() => setIsCartOpen(false)} />
+      )}
       <Toaster
         position="top-center"
         toastOptions={{
@@ -62,7 +71,7 @@ function App() {
           },
         }}
       />
-      <Footer />
+      {!isAuthPage && <Footer />}
     </div>
   );
 }

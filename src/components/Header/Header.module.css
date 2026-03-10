@@ -113,6 +113,76 @@
   padding: 8px;
 }
 
+.actionBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: opacity 0.2s ease;
+  padding: 0;
+  text-decoration: none;
+  gap: 8px;
+}
+
+.actionIcon {
+  color: white;
+  transition: color 0.2s ease;
+}
+
+.actionBtn:hover .actionIcon {
+  transform: scale(1.1);
+}
+
+.actionIconLogout:hover {
+  transform: scale(1.1);
+}
+
+.userName {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 138, 0, 0.1),
+    rgba(230, 122, 0, 0.05)
+  );
+  border: 1px solid rgba(255, 138, 0, 0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  color: #ff8a00;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: none;
+}
+
+.actionBtn:hover .userName {
+  border-color: rgba(255, 138, 0, 0.6);
+}
+
+@media (min-width: 1024px) {
+  .userName {
+    display: inline-block;
+  }
+}
+
+.mobileLogoutBtn {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.authContainer {
+  display: flex;
+  align-items: center;
+}
+
 @media (max-width: 768px) {
   .navigation {
     display: none;

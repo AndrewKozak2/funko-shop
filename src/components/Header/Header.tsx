@@ -1,7 +1,16 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Search, Menu, X, Heart } from "lucide-react";
+import {
+  ShoppingCart,
+  Search,
+  Menu,
+  X,
+  Heart,
+  User,
+  LogOut,
+} from "lucide-react";
+import { useAuthStore } from "../../store/authStore";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
@@ -13,10 +22,10 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
+  const { user, logout } = useAuthStore();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
-
     setSearchParams((prev) => {
       if (text) {
         prev.set("search", text);
@@ -37,6 +46,7 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
       document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen]);
+
   return (
     <header className={styles.headerWrapper}>
       <div className="container">
@@ -46,6 +56,7 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
               <span className={styles.brandAccent}>Funko</span> Pop Store
             </h1>
           </a>
+
           <nav className={styles.navigation}>
             <Link to="/" className={styles.navLink}>
               Home
@@ -68,12 +79,14 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
               Offers
             </Link>
           </nav>
+
           <button
             className={`${styles.burgerBtn} ${isMobileMenuOpen ? styles.burgerBtnOpen : ""}`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
+
           {isMobileMenuOpen && (
             <nav className={styles.mobileNav}>
               <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
@@ -91,6 +104,22 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
               <Link to="/wishlist" onClick={() => setIsMobileMenuOpen(false)}>
                 Wishlist
               </Link>
+
+              {user ? (
+                <button
+                  onClick={() => {
+                    logout();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={styles.mobileLogoutBtn}
+                >
+                  Logout ({user.name})
+                </button>
+              ) : (
+                <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
+                  Login
+                </Link>
+              )}
             </nav>
           )}
           <div className={styles.actions}>
@@ -104,12 +133,39 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
               />
               <Search size={20} className={styles.searchIcon} />
             </div>
-            <Link to="/wishlist" className={styles.cartBtn}>
-              <Heart size={24} className={styles.shopingCart} />
+
+            <Link to="/wishlist" className={styles.actionBtn}>
+              <Heart size={24} className={styles.actionIcon} />
             </Link>
+            <div className={styles.authContainer}>
+              {user ? (
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "15px" }}
+                >
+                  <Link
+                    to="/profile"
+                    className={styles.actionBtn}
+                    title="My Account"
+                  >
+                    <span className={styles.userName}>{user.name}</span>
+                  </Link>
+                  <button
+                    onClick={logout}
+                    className={styles.actionBtn}
+                    title="Logout"
+                  >
+                    <LogOut size={24} className={styles.actionIconLogout} />
+                  </button>
+                </div>
+              ) : (
+                <Link to="/auth" className={styles.actionBtn} title="Login">
+                  <User size={24} className={styles.actionIcon} />
+                </Link>
+              )}
+            </div>
             <div>
-              <button className={styles.cartBtn} onClick={onOpenCart}>
-                <ShoppingCart size={24} className={styles.shopingCart} />
+              <button className={styles.actionBtn} onClick={onOpenCart}>
+                <ShoppingCart size={24} className={styles.actionIcon} />
                 {cartItemsCount > 0 && (
                   <span className={styles.badge}>{cartItemsCount}</span>
                 )}
