@@ -49,6 +49,26 @@ app.get("/orders", adminAuth, async (req, res) => {
   }
 });
 
+app.patch("/orders/:id/status", adminAuth, async (req, res) => {
+  try {
+    const { status } = req.body;
+    const orderId = req.params.id;
+
+    const updateOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { status: status },
+      { new: true },
+    );
+    if (!updateOrder) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    res.json(updateOrder);
+  } catch (error) {
+    console.error("Error updating status:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 app.post("/orders", async (req, res) => {
   try {
     const newOrder = new Order(req.body);

@@ -109,3 +109,33 @@
   background: #059669;
   color: white;
 }
+
+.statusSelect {
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  outline: none;
+}
+
+.statusOption {
+  background-color: #1e293b;
+}
+
+.statusPending {
+  background-color: #f59e0b;
+}
+
+.statusShipped {
+  background-color: #3b82f6;
+}
+
+.statusDelivered {
+  background-color: #10b981;
+}
+
+.statusCancelled {
+  background-color: #ef4444;
+}

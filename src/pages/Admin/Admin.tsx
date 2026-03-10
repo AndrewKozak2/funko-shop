@@ -12,6 +12,7 @@ interface Order {
   };
   totalPrice: number;
   createdAt: string;
+  status: string;
 }
 
 export function Admin() {
@@ -72,6 +73,33 @@ export function Admin() {
     setPassword("");
   };
 
+  const updateStatus = async (orderId: string, newStatus: string) => {
+    try {
+      const savedKey = localStorage.getItem("adminKey");
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+      const responce = await fetch(`${apiUrl}/orders/${orderId}/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-key": savedKey || "",
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (!responce.ok) throw new Error("Failed to update status");
+
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === orderId ? { ...order, status: newStatus } : order,
+        ),
+      );
+      toast.success("Status updated!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update status");
+    }
+  };
+
   if (!isAuthenticated) {
     return (
       <div className={`container ${styles.wrapper}`}>
@@ -91,6 +119,19 @@ export function Admin() {
       </div>
     );
   }
+
+  const getStatusClass = (status: string) => {
+    switch (status) {
+      case "Delivered":
+        return styles.statusDelivered;
+      case "Shipped":
+        return styles.statusShipped;
+      case "Cancelled":
+        return styles.statusCancelled;
+      default:
+        return styles.statusPending;
+    }
+  };
   return (
     <div className={`container ${styles.wrapper}`}>
       <div className={styles.header}>
@@ -134,7 +175,24 @@ export function Admin() {
                 </td>
                 <td>${order.totalPrice.toFixed(2)}</td>
                 <td>
-                  <span className={styles.status}>New</span>
+                  <select
+                    value={order.status || "Pending"}
+                    onChange={(e) => updateStatus(order._id, e.target.value)}
+                    className={`${styles.statusSelect} ${getStatusClass(order.status || "Pending")}`}
+                  >
+                    <option value="Pending" className={styles.statusOption}>
+                      Pending
+                    </option>
+                    <option value="Shipped" className={styles.statusOption}>
+                      Shipped
+                    </option>
+                    <option value="Delivered" className={styles.statusOption}>
+                      Delivered
+                    </option>
+                    <option value="Cancelled" className={styles.statusOption}>
+                      Cancelled
+                    </option>
+                  </select>
                 </td>
               </tr>
             ))}
