@@ -1,4 +1,3 @@
-/* Робимо на весь екран і фіксуємо фон */
 .wrapper {
   display: flex;
   justify-content: center;
@@ -12,7 +11,6 @@
   box-sizing: border-box;
 }
 
-/* Анімовані неонові сфери на фоні */
 .orb1,
 .orb2 {
   position: absolute;
@@ -25,7 +23,7 @@
 .orb1 {
   width: 400px;
   height: 400px;
-  background: rgba(0, 246, 255, 0.4); /* Блакитний */
+  background: rgba(0, 246, 255, 0.4);
   top: -10%;
   left: -10%;
   animation: floatOrb 10s ease-in-out infinite alternate;
@@ -34,7 +32,7 @@
 .orb2 {
   width: 350px;
   height: 350px;
-  background: rgba(255, 138, 0, 0.3); /* Помаранчевий */
+  background: rgba(255, 138, 0, 0.3);
   bottom: -10%;
   right: -5%;
   animation: floatOrb 12s ease-in-out infinite alternate-reverse;
@@ -49,7 +47,6 @@
   }
 }
 
-/* Ефект матового скла (Glassmorphism) для форми */
 .authBox {
   background: rgba(30, 41, 59, 0.6);
   backdrop-filter: blur(16px);
@@ -60,7 +57,7 @@
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   width: 100%;
   max-width: 420px;
-  z-index: 1; /* Ставимо поверх сфер */
+  z-index: 1;
   position: relative;
 }
 
@@ -157,4 +154,32 @@
 
 .toggleLink:hover {
   text-shadow: 0 0 10px rgba(0, 246, 255, 0.5);
+}
+
+.otpContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.otpInput {
+  width: 50px;
+  height: 60px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid #475569;
+  border-radius: 12px;
+  color: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.otpInput:focus {
+  border-color: #00f6ff;
+  box-shadow: 0 0 0 4px rgba(0, 246, 255, 0.1);
+  background: rgba(15, 23, 42, 0.9);
+  transform: translateY(-2px);
 }

@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const User = require("./models/User");
 const Product = require("./models/Product");
 const Order = require("./models/Order");
+const sendEmail = require("./utils/sendEmail");
 
 dotenv.config();
 
@@ -54,14 +55,23 @@ app.post("/register", async (req, res) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+    const verificationCode = Math.floor(
+      100000 + Math.random() * 900000,
+    ).toString();
+    const codeExpires = new Date(Date.now() + 10 * 60 * 1000);
 
     const newUser = new User({
       name,
       email,
       password: hashedPassword,
+      verificationCode,
+      codeExpires,
+      isVerified: false,
     });
     await newUser.save();
-    res.status(201).json({ message: "User register successfully!" });
+
+    await sendEmail(email, verificationCode);
+    res.status(201).json({ message: "Verification code sent to email" });
   } catch (error) {
     console.error("Register error:", error);
     res.status(500).json({ message: "Server error during registration" });
@@ -75,6 +85,12 @@ app.post("/login", async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    if (!user.isVerified) {
+      return res
+        .status(403)
+        .json({ message: "Please verify your email first" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -97,6 +113,48 @@ app.post("/login", async (req, res) => {
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Server error during login" });
+  }
+});
+
+app.post("/verify", async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.verificationCode !== code) {
+      return res.status(400).json({ message: "Invalid verification code" });
+    }
+
+    if (user.codeExpires < new Date()) {
+      return res.status(400).json({
+        message: "Verification code has expired. Please register again.",
+      });
+    }
+
+    user.isVerified = true;
+    user.verificationCode = undefined;
+    user.codeExpires = undefined;
+    await user.save();
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    res.json({
+      message: "Email verified successfully!",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error("Verification error:", error);
+    res.status(500).json({ message: "Server error during verification" });
   }
 });
 
