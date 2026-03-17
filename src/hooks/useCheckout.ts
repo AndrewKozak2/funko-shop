@@ -81,6 +81,7 @@ export const useCheckout = () => {
           title: item.product.title,
           price: item.product.price,
           quantity: item.quantity,
+          imageUrl: item.product.imageUrl,
         })),
         totalPrice: totalPrice,
       };

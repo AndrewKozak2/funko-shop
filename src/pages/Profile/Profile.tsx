@@ -4,10 +4,19 @@ import { useAuthStore } from "../../store/authStore";
 import { LogOut } from "lucide-react";
 import styles from "./Profile.module.css";
 
+interface OrderItem {
+  productId: string;
+  title: string;
+  price: number;
+  quantity: number;
+  imageUrl?: string;
+}
+
 interface Order {
   _id: string;
   status: string;
   totalPrice: number;
+  items: OrderItem[];
 }
 
 export function Profile() {
@@ -93,9 +102,33 @@ export function Profile() {
                   </span>
                   <span className={styles.orderStatus}>{order.status}</span>
                 </div>
+                <div className={styles.orderItemsList}>
+                  {order.items.map((item, index) => (
+                    <div key={index} className={styles.itemRow}>
+                      {item.imageUrl ? (
+                        <img
+                          src={item.imageUrl}
+                          alt={item.title}
+                          className={styles.itemImage}
+                        />
+                      ) : (
+                        <div className={styles.itemImagePlaceholder}>
+                          No Img
+                        </div>
+                      )}
+
+                      <div className={styles.itemDetails}>
+                        <p className={styles.itemTitle}>{item.title}</p>
+                        <p className={styles.itemMeta}>
+                          {item.quantity} items × ${item.price}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
                 <div className={styles.orderFooter}>
                   <span className={styles.orderTotal}>
-                    Sum: ${order.totalPrice}
+                    Sum: ${order.totalPrice.toFixed(2)}
                   </span>
                 </div>
               </div>
