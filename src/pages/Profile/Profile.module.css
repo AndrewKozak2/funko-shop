@@ -1,9 +1,10 @@
 .wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 40px;
   min-height: 80vh;
-  padding: 20px;
+  padding: 40px 20px;
 }
 
 .profileBox {
@@ -86,4 +87,76 @@
 .logoutBtn:hover {
   background-color: #ef4444;
   color: white;
+}
+
+.ordersSection {
+  width: 100%;
+  max-width: 600px;
+  background-color: #1e293b;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.ordersTitle {
+  color: #f8fafc;
+  margin-bottom: 20px;
+  font-size: 22px;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 15px;
+}
+
+.ordersList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.orderCard {
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s ease;
+}
+
+.orderCard:hover {
+  border-color: #ff8a00;
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.orderId {
+  color: #94a3b8;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.orderStatus {
+  background-color: #166534;
+  color: #4ade80;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.orderTotal {
+  color: #f8fafc;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.loadingText,
+.emptyText {
+  color: #94a3b8;
+  text-align: center;
+  padding: 20px 0;
 }

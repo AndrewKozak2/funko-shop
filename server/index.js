@@ -179,10 +179,9 @@ app.get("/orders", adminAuth, async (req, res) => {
   }
 });
 
-app.get("orders/user/:email", async (req, res) => {
+app.get("/orders/user/:email", async (req, res) => {
   try {
     const userEmail = req.params.email;
-
     const userOrders = await Order.find({ "customer.email": userEmail }).sort({
       createdAt: -1,
     });
