@@ -179,6 +179,20 @@ app.get("/orders", adminAuth, async (req, res) => {
   }
 });
 
+app.get("orders/user/:email", async (req, res) => {
+  try {
+    const userEmail = req.params.email;
+
+    const userOrders = await Order.find({ "customer.email": userEmail }).sort({
+      createdAt: -1,
+    });
+    res.json(userOrders);
+  } catch (error) {
+    console.error("Error fetching user orders:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 app.patch("/orders/:id/status", adminAuth, async (req, res) => {
   try {
     const { status } = req.body;
