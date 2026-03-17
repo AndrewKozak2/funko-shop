@@ -11,6 +11,7 @@ import { Checkout } from "./pages/Checkout/Checkout";
 import { Wishlist } from "./pages/Wishlist/Wishlist";
 import { Success } from "./pages/Success/Success";
 import { Admin } from "./pages/Admin/Admin";
+import { Profile } from "./pages/Profile/Profile";
 import { Auth } from "./pages/Auth/Auth";
 import { Footer } from "./components/Footer/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
@@ -47,6 +48,7 @@ function App() {
           <Route path="/success" element={<Success />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
       </main>
