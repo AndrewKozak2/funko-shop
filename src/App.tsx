@@ -13,6 +13,7 @@ import { Success } from "./pages/Success/Success";
 import { Admin } from "./pages/Admin/Admin";
 import { Profile } from "./pages/Profile/Profile";
 import { Auth } from "./pages/Auth/Auth";
+import { AdminRoute } from "./components/AdminRoute/AdminRoute";
 import { Footer } from "./components/Footer/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ScrollUpButton } from "./components/ScrollUpButton/ScrollUpButton";
@@ -46,7 +47,14 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/success" element={<Success />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <Admin />
+              </AdminRoute>
+            }
+          />
           <Route path="/auth" element={<Auth />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/product/:id" element={<ProductPage />} />

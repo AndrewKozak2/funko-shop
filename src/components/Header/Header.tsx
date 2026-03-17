@@ -9,6 +9,7 @@ import {
   Heart,
   User,
   LogOut,
+  Settings,
 } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
 import styles from "./Header.module.css";
@@ -23,6 +24,8 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
   const { user, logout } = useAuthStore();
+
+  const isAdmin = user?.email === import.meta.env.VITE_ADMIN_EMAIL;
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
@@ -142,6 +145,15 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "15px" }}
                 >
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      className={styles.actionBtn}
+                      title="Admin Dashboard"
+                    >
+                      <Settings size={24} color="#ff8a00" />
+                    </Link>
+                  )}
                   <Link
                     to="/profile"
                     className={styles.actionBtn}
