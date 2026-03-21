@@ -32,6 +32,9 @@ export function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState(user?.name || "");
   const [isUpdating, setIsUpdating] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteInput, setDeleteInput] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -93,6 +96,30 @@ export function Profile() {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (deleteInput !== "DELETE") {
+      toast.error("Please enter DELETE to confirm");
+      return;
+    }
+    setIsDeleting(true);
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+      const response = await fetch(`${apiUrl}/user/${user.email}`, {
+        method: "DELETE",
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Deleted failed");
+      logout();
+      toast.success("Account successfully deleted");
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      toast.error("Unable to delete account");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -144,11 +171,55 @@ export function Profile() {
             <p className={styles.userEmail}>{user.email}</p>
           </div>
         </div>
+        <div className={styles.accountActions}>
+          <button onClick={handleLogout} className={styles.logoutBtn}>
+            <LogOut size={18} />
+            <span>LogOut</span>
+          </button>
 
-        <button onClick={handleLogout} className={styles.logoutBtn}>
-          <LogOut size={18} />
-          <span>LogOut</span>
-        </button>
+          <div className={styles.dangerZone}>
+            {!showDeleteConfirm ? (
+              <button
+                className={styles.deleteInitBtn}
+                onClick={() => setShowDeleteConfirm(true)}
+              >
+                Delete Account
+              </button>
+            ) : (
+              <div className={styles.deleteConfirmBox}>
+                <p className={styles.dangerText}>
+                  This action cannot be undone. Type <strong>DELETE</strong> to
+                  confirm.
+                </p>
+                <input
+                  type="text"
+                  value={deleteInput}
+                  onChange={(e) => setDeleteInput(e.target.value)}
+                  placeholder="DELETE"
+                  className={styles.dangerInput}
+                />
+                <div className={styles.dangerButtons}>
+                  <button
+                    className={styles.deleteFinalBtn}
+                    onClick={handleDeleteAccount}
+                    disabled={deleteInput !== "DELETE" || isDeleting}
+                  >
+                    {isDeleting ? "Deleting..." : "Permanently Delete"}
+                  </button>
+                  <button
+                    className={styles.cancelDeleteBtn}
+                    onClick={() => {
+                      setShowDeleteConfirm(false);
+                      setDeleteInput("");
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className={styles.ordersSection}>

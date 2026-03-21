@@ -250,6 +250,21 @@ app.put("/user/update", async (req, res) => {
   }
 });
 
+app.delete("/user/:email", async (req, res) => {
+  try {
+    const emailToDelete = req.params.email;
+    await Order.deleteMany({ "customer.email": emailToDelete });
+    const deleteUser = await User.findOneAndDelete({ email: emailToDelete });
+    if (!deleteUser) {
+      return res.status(404).json({ message: "User not deleted" });
+    }
+    res.json({ message: "Account deleted" });
+  } catch (error) {
+    console.error("Error to deleting user", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(` Server running on port ${PORT}`);

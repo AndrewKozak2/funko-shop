@@ -89,6 +89,118 @@
   color: white;
 }
 
+.accountActions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.dangerZone {
+  border-top: 1px dashed #475569;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.deleteInitBtn {
+  background: transparent;
+  color: #64748b;
+  border: none;
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.deleteInitBtn:hover {
+  color: #ef4444;
+}
+
+.deleteConfirmBox {
+  width: 100%;
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dangerText {
+  color: #f8fafc;
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.dangerText strong {
+  color: #ef4444;
+}
+
+.dangerInput {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid #ef4444;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  outline: none;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.dangerButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.deleteFinalBtn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
+  flex: 1;
+  transition: opacity 0.2s;
+}
+
+.deleteFinalBtn:hover:not(:disabled) {
+  opacity: 0.8;
+}
+
+.deleteFinalBtn:disabled {
+  background-color: #475569;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.cancelDeleteBtn {
+  background-color: transparent;
+  color: #94a3b8;
+  border: 1px solid #475569;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  flex: 1;
+  transition: all 0.2s;
+}
+
+.cancelDeleteBtn:hover {
+  background-color: #334155;
+  color: white;
+}
+
 .ordersSection {
   width: 100%;
   max-width: 600px;
