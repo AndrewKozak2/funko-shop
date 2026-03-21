@@ -13,16 +13,31 @@ export function Auth() {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
 
   const handleAuth = async (e: React.ChangeEvent) => {
     e.preventDefault();
+    if (authMode === "register") {
+      if (formData.password !== formData.confirmPassword) {
+        toast.error("Password do not match!");
+        return;
+      }
+      const passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$/;
+      if (!passwordRegex.test(formData.password)) {
+        toast.error(
+          "Password must be at least 6 characters long and contain both letters and numbers",
+        );
+        return;
+      }
+    }
     setIsLoading(true);
 
     try {
@@ -218,6 +233,33 @@ export function Auth() {
                 </button>
               </div>
             </div>
+
+            {authMode === "register" && (
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Confirm Password</label>
+                <div className={styles.passwordWrapper}>
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    required
+                    className={styles.input}
+                    value={formData.confirmPassword}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
+                  />
+                  <button
+                    type="button"
+                    className={styles.eyeBtn}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+              </div>
+            )}
 
             <button
               type="submit"
