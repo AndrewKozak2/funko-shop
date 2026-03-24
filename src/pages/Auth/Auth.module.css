@@ -213,3 +213,41 @@
   background: rgba(15, 23, 42, 0.9);
   transform: translateY(-2px);
 }
+
+.infoText {
+  color: #94a3b8;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.forgotPasswordWrapper {
+  text-align: right;
+  margin-top: 8px;
+}
+
+.forgotPasswordLink {
+  color: #ff8a00;
+  font-size: 12px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.forgotPasswordLink:hover {
+  opacity: 0.8;
+}
+
+.backToLoginWrapper {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.backToLoginLink {
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.backToLoginLink:hover {
+  color: #f8fafc;
+}

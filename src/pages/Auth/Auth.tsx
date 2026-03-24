@@ -5,7 +5,12 @@ import toast from "react-hot-toast";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import styles from "./Auth.module.css";
 
-type AuthMode = "login" | "register" | "verify";
+type AuthMode =
+  | "login"
+  | "register"
+  | "verify"
+  | "forgot-password"
+  | "reset-password";
 // Trigger Vercel rebuild after rollback
 export function Auth() {
   const [authMode, setAuthMode] = useState<AuthMode>("login");
@@ -109,6 +114,84 @@ export function Auth() {
     }
   };
 
+  const handleForgotPassword = async (
+    e: React.ChangeEvent<HTMLFormElement>,
+  ) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const response = await fetch(`${apiUrl}/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Request failed");
+
+      toast.success("If the email exists, a reset code was sent.");
+      setAuthMode("reset-password");
+    } catch (error: any) {
+      toast.error(error.message || "Unable to process request");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const fullCode = code.join("");
+    if (fullCode.length !== 6) {
+      toast.error("Please enter all 6 digits");
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords don't match");
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      toast.error(
+        "Password must be at least 6 characters long and contain both letters and numbers",
+      );
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const response = await fetch(`${apiUrl}/reset-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          resetCode: fullCode,
+          newPassword: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.message || "Request failed");
+
+      toast.success("Password successfully reset! You can now login.");
+
+      setCode(["", "", "", "", "", ""]);
+      setFormData({ ...formData, password: "", confirmPassword: "" });
+
+      setAuthMode("login");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to reset password");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleOtpChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return;
 
@@ -144,17 +227,13 @@ export function Auth() {
           {authMode === "login" && "Welcome Back"}
           {authMode === "register" && "Create Account"}
           {authMode === "verify" && "Verify Email"}
+          {authMode === "forgot-password" && "Reset Password"}
+          {authMode === "reset-password" && "Create New Password"}
         </h2>
 
         {authMode === "verify" ? (
           <form onSubmit={handleVerify}>
-            <p
-              style={{
-                color: "#94a3b8",
-                textAlign: "center",
-                marginBottom: "20px",
-              }}
-            >
+            <p className={styles.infoText}>
               We've sent a 6-digit code to <strong>{formData.email}</strong>
             </p>
 
@@ -181,6 +260,132 @@ export function Auth() {
             >
               {isLoading ? "Verifying..." : "Verify & Enter"}
             </button>
+          </form>
+        ) : authMode === "forgot-password" ? (
+          <form onSubmit={handleForgotPassword}>
+            <p className={styles.infoText}>
+              Enter your email and we'll send you a 6-digit code to reset your
+              password.
+            </p>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Email</label>
+              <input
+                type="email"
+                required
+                className={styles.input}
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+              />
+            </div>
+            <button
+              type="submit"
+              className={styles.submitBtn}
+              disabled={isLoading}
+            >
+              {isLoading ? "Sending..." : "Send Reset Code"}
+            </button>
+            <p className={styles.backToLoginWrapper}>
+              <span
+                className={styles.backToLoginLink}
+                onClick={() => setAuthMode("login")}
+              >
+                Back to Login
+              </span>
+            </p>
+          </form>
+        ) : authMode === "reset-password" ? (
+          <form onSubmit={handleResetPassword}>
+            <p className={styles.infoText}>
+              Enter the 6-digit code sent to <strong>{formData.email}</strong>{" "}
+              and your new password.
+            </p>
+
+            <div
+              className={styles.otpContainer}
+              style={{ marginBottom: "20px" }}
+            >
+              {code.map((digit, index) => (
+                <input
+                  key={index}
+                  id={`otp-${index}`}
+                  type="text"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleOtpChange(index, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(index, e)}
+                  className={styles.otpInput}
+                  required
+                />
+              ))}
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}>New Password</label>
+              <div className={styles.passwordWrapper}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  className={styles.input}
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                />
+                <button
+                  type="button"
+                  className={styles.eyeBtn}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+            </div>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Confirm New Password</label>
+              <div className={styles.passwordWrapper}>
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  required
+                  className={styles.input}
+                  value={formData.confirmPassword}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                />
+                <button
+                  type="button"
+                  className={styles.eyeBtn}
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
+                </button>
+              </div>
+            </div>
+            <button
+              type="submit"
+              className={styles.submitBtn}
+              disabled={isLoading}
+            >
+              {isLoading ? "Saving..." : "Save New Password"}
+            </button>
+
+            <p className={styles.backToLoginWrapper}>
+              <span
+                className={styles.backToLoginLink}
+                onClick={() => setAuthMode("login")}
+              >
+                Cancel & Back to Login
+              </span>
+            </p>
           </form>
         ) : (
           <form onSubmit={handleAuth}>
@@ -232,6 +437,17 @@ export function Auth() {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
+
+              {authMode === "login" && (
+                <div className={styles.forgotPasswordWrapper}>
+                  <span
+                    className={styles.forgotPasswordLink}
+                    onClick={() => setAuthMode("forgot-password")}
+                  >
+                    Forgot Password?
+                  </span>
+                </div>
+              )}
             </div>
 
             {authMode === "register" && (
@@ -255,7 +471,11 @@ export function Auth() {
                     className={styles.eyeBtn}
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
-                    {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    {showConfirmPassword ? (
+                      <EyeOff size={20} />
+                    ) : (
+                      <Eye size={20} />
+                    )}
                   </button>
                 </div>
               </div>
@@ -275,7 +495,7 @@ export function Auth() {
           </form>
         )}
 
-        {authMode !== "verify" && (
+        {(authMode === "login" || authMode === "register") && (
           <p className={styles.toggleText}>
             {authMode === "login"
               ? "Don't have an account?"

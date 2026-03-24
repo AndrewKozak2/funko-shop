@@ -265,6 +265,69 @@ app.delete("/user/:email", async (req, res) => {
   }
 });
 
+app.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res
+        .status(200)
+        .json({ message: "If an account exists, a reset code was sent." });
+    }
+
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+    user.resetPasswordCode = resetCode;
+    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
+    await user.save();
+
+    const emailSubject = "Password Reset Code - Funko Shop";
+    const emailMessage = `Your password reset code is: ${resetCode}. It is valid for 15 minutes.`;
+
+    await sendEmail(user.email, resetCode, "reset");
+    res
+      .status(200)
+      .json({ message: "If an account exists, a reset code was sent." });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+app.post("/reset-password", async (req, res) => {
+  try {
+    const { email, resetCode, newPassword } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    if (user.resetPasswordCode !== resetCode) {
+      return res.status(400).json({ message: "Invalid reset code" });
+    }
+
+    if (Date.now() > user.resetPasswordExpires) {
+      return res
+        .status(400)
+        .json({ message: "Reset code has expired. Please request a new one." });
+    }
+
+    const bcrypt = require("bcryptjs");
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    user.password = hashedPassword;
+    user.resetPasswordCode = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+    res.status(200).json({ message: "Password successfully reset" });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(` Server running on port ${PORT}`);
