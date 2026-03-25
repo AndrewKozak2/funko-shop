@@ -8,6 +8,7 @@ const User = require("./models/User");
 const Product = require("./models/Product");
 const Order = require("./models/Order");
 const sendEmail = require("./utils/sendEmail");
+const PromoCode = require("./models/PromoCode");
 
 dotenv.config();
 
@@ -324,6 +325,27 @@ app.post("/reset-password", async (req, res) => {
     res.status(200).json({ message: "Password successfully reset" });
   } catch (error) {
     console.error("Reset password error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.post("/apply-promo", async (req, res) => {
+  try {
+    const { code } = req.body;
+    const promo = await PromoCode.findOne({ code });
+
+    if (!promo) {
+      return res.status(400).json({ message: "Invalid promo code" });
+    }
+    if (!promo.isActive) {
+      return res.status(400).json({ message: "Promo code is inactive" });
+    }
+    res.status(200).json({
+      message: "Promo code applied successfully!",
+      discount: promo.discount,
+    });
+  } catch (error) {
+    console.error("Promo code error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
