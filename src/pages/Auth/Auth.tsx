@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
+import { ForgotPasswordForm } from "./ForgotPasswordForm";
+import { VerifyEmailForm } from "./VerifyEmailForm";
+import { ResetPasswordForm } from "./ResetPasswordForm";
+import { LoginForm } from "./LoginForm";
 import toast from "react-hot-toast";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import styles from "./Auth.module.css";
 
 type AuthMode =
@@ -28,7 +32,7 @@ export function Auth() {
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
 
-  const handleAuth = async (e: React.ChangeEvent) => {
+  const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     if (authMode === "register") {
       if (formData.password !== formData.confirmPassword) {
@@ -77,7 +81,7 @@ export function Auth() {
     }
   };
 
-  const handleVerify = async (e: React.ChangeEvent) => {
+  const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
     const fullCode = code.join("");
 
@@ -114,9 +118,7 @@ export function Auth() {
     }
   };
 
-  const handleForgotPassword = async (
-    e: React.ChangeEvent<HTMLFormElement>,
-  ) => {
+  const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -232,283 +234,64 @@ export function Auth() {
         </h2>
 
         {authMode === "verify" ? (
-          <form onSubmit={handleVerify}>
-            <p className={styles.infoText}>
-              We've sent a 6-digit code to <strong>{formData.email}</strong>
-            </p>
-
-            <div className={styles.otpContainer}>
-              {code.map((digit, index) => (
-                <input
-                  key={index}
-                  id={`otp-${index}`}
-                  type="text"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleOtpChange(index, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(index, e)}
-                  className={styles.otpInput}
-                  required
-                />
-              ))}
-            </div>
-
-            <button
-              type="submit"
-              className={styles.submitBtn}
-              disabled={isLoading}
-            >
-              {isLoading ? "Verifying..." : "Verify & Enter"}
-            </button>
-          </form>
+          <VerifyEmailForm
+            email={formData.email}
+            code={code}
+            isLoading={isLoading}
+            onOtpChange={handleOtpChange}
+            onKeyDown={handleKeyDown}
+            onSubmit={handleVerify}
+          />
         ) : authMode === "forgot-password" ? (
-          <form onSubmit={handleForgotPassword}>
-            <p className={styles.infoText}>
-              Enter your email and we'll send you a 6-digit code to reset your
-              password.
-            </p>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Email</label>
-              <input
-                type="email"
-                required
-                className={styles.input}
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-            </div>
-            <button
-              type="submit"
-              className={styles.submitBtn}
-              disabled={isLoading}
-            >
-              {isLoading ? "Sending..." : "Send Reset Code"}
-            </button>
-            <p className={styles.backToLoginWrapper}>
-              <span
-                className={styles.backToLoginLink}
-                onClick={() => setAuthMode("login")}
-              >
-                Back to Login
-              </span>
-            </p>
-          </form>
+          <ForgotPasswordForm
+            email={formData.email}
+            isLoading={isLoading}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+            onSubmit={handleForgotPassword}
+            onBack={() => setAuthMode("login")}
+          />
         ) : authMode === "reset-password" ? (
-          <form onSubmit={handleResetPassword}>
-            <p className={styles.infoText}>
-              Enter the 6-digit code sent to <strong>{formData.email}</strong>{" "}
-              and your new password.
-            </p>
-
-            <div
-              className={styles.otpContainer}
-              style={{ marginBottom: "20px" }}
-            >
-              {code.map((digit, index) => (
-                <input
-                  key={index}
-                  id={`otp-${index}`}
-                  type="text"
-                  maxLength={1}
-                  value={digit}
-                  onChange={(e) => handleOtpChange(index, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(index, e)}
-                  className={styles.otpInput}
-                  required
-                />
-              ))}
-            </div>
-
-            <div className={styles.formGroup}>
-              <label className={styles.label}>New Password</label>
-              <div className={styles.passwordWrapper}>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  required
-                  className={styles.input}
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                />
-                <button
-                  type="button"
-                  className={styles.eyeBtn}
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
-              </div>
-            </div>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Confirm New Password</label>
-              <div className={styles.passwordWrapper}>
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  required
-                  className={styles.input}
-                  value={formData.confirmPassword}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      confirmPassword: e.target.value,
-                    })
-                  }
-                />
-                <button
-                  type="button"
-                  className={styles.eyeBtn}
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff size={20} />
-                  ) : (
-                    <Eye size={20} />
-                  )}
-                </button>
-              </div>
-            </div>
-            <button
-              type="submit"
-              className={styles.submitBtn}
-              disabled={isLoading}
-            >
-              {isLoading ? "Saving..." : "Save New Password"}
-            </button>
-
-            <p className={styles.backToLoginWrapper}>
-              <span
-                className={styles.backToLoginLink}
-                onClick={() => setAuthMode("login")}
-              >
-                Cancel & Back to Login
-              </span>
-            </p>
-          </form>
+          <ResetPasswordForm
+            email={formData.email}
+            code={code}
+            isLoading={isLoading}
+            passwordValue={formData.password}
+            confirmPasswordValue={formData.confirmPassword}
+            showPassword={showPassword}
+            showConfirmPassword={showConfirmPassword}
+            onOtpChange={handleOtpChange}
+            onKeyDown={handleKeyDown}
+            onPasswordChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
+            onConfirmPasswordChange={(e) =>
+              setFormData({ ...formData, confirmPassword: e.target.value })
+            }
+            onTogglePassword={() => setShowPassword(!showPassword)}
+            onToggleConfirmPassword={() =>
+              setShowConfirmPassword(!showConfirmPassword)
+            }
+            onSubmit={handleResetPassword}
+            onBack={() => setAuthMode("login")}
+          />
         ) : (
-          <form onSubmit={handleAuth}>
-            {authMode === "register" && (
-              <div className={styles.formGroup}>
-                <label className={styles.label}>Name</label>
-                <input
-                  type="text"
-                  required
-                  className={styles.input}
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                />
-              </div>
-            )}
-
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Email</label>
-              <input
-                type="email"
-                required
-                className={styles.input}
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-            </div>
-
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Password</label>
-              <div className={styles.passwordWrapper}>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  required
-                  className={styles.input}
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                />
-                <button
-                  type="button"
-                  className={styles.eyeBtn}
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
-              </div>
-
-              {authMode === "login" && (
-                <div className={styles.forgotPasswordWrapper}>
-                  <span
-                    className={styles.forgotPasswordLink}
-                    onClick={() => setAuthMode("forgot-password")}
-                  >
-                    Forgot Password?
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {authMode === "register" && (
-              <div className={styles.formGroup}>
-                <label className={styles.label}>Confirm Password</label>
-                <div className={styles.passwordWrapper}>
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    required
-                    className={styles.input}
-                    value={formData.confirmPassword}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        confirmPassword: e.target.value,
-                      })
-                    }
-                  />
-                  <button
-                    type="button"
-                    className={styles.eyeBtn}
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff size={20} />
-                    ) : (
-                      <Eye size={20} />
-                    )}
-                  </button>
-                </div>
-              </div>
-            )}
-
-            <button
-              type="submit"
-              className={styles.submitBtn}
-              disabled={isLoading}
-            >
-              {isLoading
-                ? "Processing..."
-                : authMode === "login"
-                  ? "Login"
-                  : "Sign Up"}
-            </button>
-          </form>
-        )}
-
-        {(authMode === "login" || authMode === "register") && (
-          <p className={styles.toggleText}>
-            {authMode === "login"
-              ? "Don't have an account?"
-              : "Already have an account?"}
-            <span
-              className={styles.toggleLink}
-              onClick={() =>
-                setAuthMode(authMode === "login" ? "register" : "login")
-              }
-            >
-              {authMode === "login" ? "Sign Up" : "Login"}
-            </span>
-          </p>
+          <LoginForm
+            authMode={authMode as "login" | "register"}
+            formData={formData}
+            setFormData={setFormData}
+            isLoading={isLoading}
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+            showConfirmPassword={showConfirmPassword}
+            setShowConfirmPassword={setShowConfirmPassword}
+            onSubmit={handleAuth}
+            onForgotPassword={() => setAuthMode("forgot-password")}
+            onToggleMode={() =>
+              setAuthMode(authMode === "login" ? "register" : "login")
+            }
+          />
         )}
       </div>
     </div>
