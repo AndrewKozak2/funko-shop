@@ -27,7 +27,9 @@ export const useCheckout = () => {
     null,
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [promoCode, setPromoCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [isCheckingPromo, setIsCheckingPromo] = useState(false);
   const cart = useCartStore((state) => state.cart);
   const clearCart = useCartStore((state) => state.clearCart);
   const navigate = useNavigate();
@@ -36,6 +38,8 @@ export const useCheckout = () => {
     (sum, item) => sum + item.product.price * item.quantity,
     0,
   );
+
+  const finalPrice = totalPrice - (totalPrice * discount) / 100;
 
   useEffect(() => {
     if (selectedCity) {
@@ -51,6 +55,33 @@ export const useCheckout = () => {
     callback: (options: City[]) => void,
   ) => {
     searchCities(inputValue).then((options) => callback(options));
+  };
+
+  const handleApplyPromo = async () => {
+    if (!promoCode.trim()) return;
+    setIsCheckingPromo(true);
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+      const response = await fetch(`${apiUrl}/apply-promo`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code: promoCode }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        toast.error(data.message);
+        return;
+      }
+      setDiscount(data.discount);
+      toast.success("PromoCode success!");
+    } catch (error) {
+      toast.error("Failed to apply promo code");
+    } finally {
+      setIsCheckingPromo(false);
+    }
   };
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -83,7 +114,7 @@ export const useCheckout = () => {
           quantity: item.quantity,
           imageUrl: item.product.imageUrl,
         })),
-        totalPrice: totalPrice,
+        totalPrice: finalPrice,
       };
 
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -105,7 +136,7 @@ export const useCheckout = () => {
       navigate("/success", {
         state: {
           orderId: savedOrder._id,
-          total: totalPrice.toFixed(2),
+          total: finalPrice.toFixed(2),
         },
       });
 
@@ -130,5 +161,11 @@ export const useCheckout = () => {
     cart,
     totalPrice,
     loadCities,
+    promoCode,
+    setPromoCode,
+    discount,
+    finalPrice,
+    handleApplyPromo,
+    isCheckingPromo,
   };
 };

@@ -142,3 +142,50 @@
   font-size: 1.5rem;
   font-weight: bold;
 }
+
+.totalRight {
+  text-align: right;
+}
+
+.oldPrice {
+  text-decoration: line-through;
+  color: #94a3b8;
+  margin-right: 10px;
+  font-size: 0.9em;
+}
+
+.promoFlex {
+  display: flex;
+  gap: 10px;
+}
+
+.promoSuccess {
+  color: #00f6ff;
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+.promoApplyBtn {
+  background-color: #3b82f6;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: 48px;
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+.promoApplyBtn:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.promoApplyBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #94a3b8;
+}

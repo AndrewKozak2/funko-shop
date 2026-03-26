@@ -21,6 +21,12 @@ export function Checkout() {
     handleSubmit,
     isSubmitting,
     loadCities,
+    promoCode,
+    setPromoCode,
+    discount,
+    finalPrice,
+    handleApplyPromo,
+    isCheckingPromo,
   } = useCheckout();
 
   if (cart.length === 0) {
@@ -81,7 +87,16 @@ export function Checkout() {
           ))}
           <div className={styles.totalBlock}>
             <span className={styles.totalLabel}>Total:</span>
-            <span className={styles.totalAmount}>${totalPrice.toFixed(2)}</span>
+            <div className={styles.totalRight}>
+              {discount > 0 && (
+                <span className={styles.oldPrice}>
+                  ${totalPrice.toFixed(2)}
+                </span>
+              )}
+              <span className={styles.totalAmount}>
+                ${finalPrice.toFixed(2)}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -174,7 +189,32 @@ export function Checkout() {
             filterOption={customWarehouseFilter}
           />
         </div>
-
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Promo Code</label>
+          <div className={styles.promoFlex}>
+            <input
+              type="text"
+              className={styles.input}
+              placeholder="Enter promo code..."
+              value={promoCode}
+              onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+              disabled={isCheckingPromo || discount > 0}
+            />
+            <button
+              type="button"
+              onClick={handleApplyPromo}
+              disabled={isCheckingPromo || !promoCode || discount > 0}
+              className={styles.promoApplyBtn}
+            >
+              {isCheckingPromo ? "..." : discount > 0 ? "Applied" : "Apply"}
+            </button>
+          </div>
+          {discount > 0 && (
+            <p className={styles.promoSuccess}>
+              Discount of {discount}% successfully applied!
+            </p>
+          )}
+        </div>
         <button
           type="submit"
           className={styles.submitBtn}
