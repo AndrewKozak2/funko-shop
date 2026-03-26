@@ -17,10 +17,10 @@ import { Footer } from "./components/Footer/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ScrollUpButton } from "./components/ScrollUpButton/ScrollUpButton";
 import { Toaster } from "react-hot-toast";
-import "./App.css";
 import { AdminLayout } from "./pages/Admin/AdminLayout";
 import { AdminOrders } from "./pages/Admin/AdminOrders";
 import { AdminPromoCodes } from "./pages/Admin/AdminPromoCodes";
+import "./App.css";
 
 function App() {
   const cart = useCartStore((state) => state.cart);
@@ -28,6 +28,7 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const location = useLocation();
   const isAuthPage = location.pathname === "/auth";
+  const isAdminPage = location.pathname.startsWith("/admin");
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -88,7 +89,7 @@ function App() {
           },
         }}
       />
-      {!isAuthPage && <Footer />}
+      {!isAuthPage && !isAdminPage && <Footer />}
     </div>
   );
 }

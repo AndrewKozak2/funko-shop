@@ -368,6 +368,33 @@ app.get("/promocodes", async (req, res) => {
   }
 });
 
+app.post("/promocodes", async (req, res) => {
+  try {
+    const adminKey = req.headers["x-admin-key"];
+    if (adminKey !== process.env.ADMIN_SECRET) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const { code, discount } = req.body;
+
+    if (!code || !discount) {
+      return res.status(400).json({ message: "Code and discount are required" });
+    }
+
+    const newPromo = await PromoCode.create({
+      code: code.toUpperCase(),
+      discount: Number(discount),
+      isActive: true
+    });
+
+    res.status(201).json(newPromo);
+
+  } catch (error) {
+    console.error("Create promo error:", error);
+    res.status(500).json({ message: "Error creating promo code" });
+  }
+});
+
 app.delete("/promocodes/:id", async (req, res) => {
   try {
     const adminKey = req.headers["x-admin-key"];

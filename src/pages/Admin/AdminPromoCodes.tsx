@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { CreatePromoModal } from "./CreatePromoModal";
 import styles from "./AdminPromoCodes.module.css";
 import toast from "react-hot-toast";
 
@@ -12,7 +13,7 @@ interface PromoCode {
 export function AdminPromoCodes() {
   const [promoCodes, setPromoCodes] = useState<PromoCode[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
     fetchPromoCodes();
   }, []);
@@ -84,7 +85,12 @@ export function AdminPromoCodes() {
           <p className={styles.subtitle}>Total codes: {promoCodes.length}</p>
         </div>
 
-        <button className={styles.createPromoBtn}>+ Create New</button>
+        <button
+          className={styles.createPromoBtn}
+          onClick={() => setIsModalOpen(true)}
+        >
+          + Create New
+        </button>
       </div>
 
       <div className={styles.tableWrapper}>
@@ -136,6 +142,13 @@ export function AdminPromoCodes() {
           </tbody>
         </table>
       </div>
+      <CreatePromoModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={(newPromo) => {
+          setPromoCodes((prevCodes) => [newPromo, ...prevCodes]);
+        }}
+      />
     </>
   );
 }
