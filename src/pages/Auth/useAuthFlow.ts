@@ -45,7 +45,7 @@ export const useAuthFlow = () => {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
       const endpoint = authMode === "login" ? "login" : "register";
 
-      const response = await fetch(`${apiUrl}/${endpoint}`, {
+      const response = await fetch(`${apiUrl}/auth/${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -86,7 +86,7 @@ export const useAuthFlow = () => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-      const response = await fetch(`${apiUrl}/verify`, {
+      const response = await fetch(`${apiUrl}/auth/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -116,7 +116,7 @@ export const useAuthFlow = () => {
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
-      const response = await fetch(`${apiUrl}/forgot-password`, {
+      const response = await fetch(`${apiUrl}/auth/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email }),
@@ -159,7 +159,7 @@ export const useAuthFlow = () => {
     setIsLoading(true);
     try {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
-      const response = await fetch(`${apiUrl}/reset-password`, {
+      const response = await fetch(`${apiUrl}/auth/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -74,7 +74,7 @@ export function Profile() {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-      const response = await fetch(`${apiUrl}/user/update`, {
+      const response = await fetch(`${apiUrl}/auth/update`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: user.email, newName: newName }),
@@ -105,7 +105,7 @@ export function Profile() {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-      const response = await fetch(`${apiUrl}/user/${user.email}`, {
+      const response = await fetch(`${apiUrl}/auth/${user.email}`, {
         method: "DELETE",
       });
       const data = await response.json();

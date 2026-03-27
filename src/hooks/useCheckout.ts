@@ -63,7 +63,7 @@ export const useCheckout = () => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-      const response = await fetch(`${apiUrl}/apply-promo`, {
+      const response = await fetch(`${apiUrl}/promocodes/apply`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
