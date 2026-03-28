@@ -167,6 +167,7 @@ export function AdminProducts() {
         <CreateProductModal
           onClose={() => setIsCreateModalOpen(false)}
           onSuccess={fetchAdminProducts} 
+          products={adminProducts}
         />
       )}
     </>

@@ -5,15 +5,23 @@ import toast from "react-hot-toast";
 interface CreateProductModalProps {
   onClose: () => void;
   onSuccess: () => void;
+  products: { collection: string }[];
 }
 
 export function CreateProductModal({
   onClose,
   onSuccess,
+  products,
 }: CreateProductModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
+  const [isNewCollection, setIsNewCollection] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const uniqueCollections = Array.from(
+    new Set(products.map((p) => p.collection)),
+  );
 
   const [formData, setFormData] = useState({
     title: "",
@@ -104,6 +112,7 @@ export function CreateProductModal({
             <label>Title</label>
             <input
               type="text"
+              placeholder="Enter Title"
               value={formData.title}
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
@@ -116,6 +125,7 @@ export function CreateProductModal({
             <label>Price</label>
             <input
               type="number"
+              placeholder="Enter price"
               value={formData.price}
               onChange={(e) =>
                 setFormData({ ...formData, price: e.target.value })
@@ -125,43 +135,88 @@ export function CreateProductModal({
           </div>
           <div className={styles.inputGroup}>
             <label>Product Image</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              required
-              style={{
-                padding: "8px",
-                background: "transparent",
-                border: "1px dashed rgba(255,255,255,0.3)",
-              }}
-            />
+            <label className={styles.fileUploadArea}>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className={styles.hiddenFileInput}
+                required={!imageFile}
+              />
+
+              <div className={styles.fileUploadPlaceholder}>
+                {imageFile ? (
+                  <span className={styles.fileName}>✓ {imageFile.name}</span>
+                ) : (
+                  <span>Click or drag to upload an image</span>
+                )}
+              </div>
+            </label>
+
             {imagePreview && (
               <img
                 src={imagePreview}
                 alt="Preview"
-                style={{
-                  width: "80px",
-                  height: "80px",
-                  objectFit: "contain",
-                  marginTop: "10px",
-                  borderRadius: "8px",
-                  backgroundColor: "rgba(255,255,255,0.05)",
-                }}
+                className={styles.imagePreview}
               />
             )}
           </div>
 
           <div className={styles.inputGroup}>
             <label>Collection</label>
-            <input
-              type="text"
-              value={formData.collection}
-              onChange={(e) =>
-                setFormData({ ...formData, collection: e.target.value })
-              }
-              required
-            />
+            {isNewCollection ? (
+              <input
+                type="text"
+                placeholder="Enter new collection name"
+                value={formData.collection}
+                onChange={(e) =>
+                  setFormData({ ...formData, collection: e.target.value })
+                }
+                required
+              />
+            ) : (
+              <div className={styles.customSelectWrapper}>
+                <div
+                  className={styles.customSelectTrigger}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  <span>{formData.collection || "Select a collection"}</span>
+                  <span className={styles.arrow}>
+                    {isDropdownOpen ? "▲" : "▼"}
+                  </span>
+                </div>
+
+                {isDropdownOpen && (
+                  <ul className={styles.customSelectList}>
+                    {uniqueCollections.map((colName) => (
+                      <li
+                        key={colName}
+                        className={styles.customSelectOption}
+                        onClick={() => {
+                          setFormData({ ...formData, collection: colName });
+                          setIsDropdownOpen(false);
+                        }}
+                      >
+                        {colName}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+          </div>
+          <div className={styles.checkboxGroup}>
+            <label>
+              <input
+                type="checkbox"
+                checked={isNewCollection}
+                onChange={(e) => {
+                  setIsNewCollection(e.target.checked);
+                  setFormData({ ...formData, collection: "" });
+                }}
+              />
+              Add new collection?
+            </label>
           </div>
 
           <div className={styles.checkboxGroup}>
@@ -174,19 +229,6 @@ export function CreateProductModal({
                 }
               />
               Is Exclusive?
-            </label>
-          </div>
-
-          <div className={styles.checkboxGroup}>
-            <label>
-              <input
-                type="checkbox"
-                checked={formData.isBundle}
-                onChange={(e) =>
-                  setFormData({ ...formData, isBundle: e.target.checked })
-                }
-              />
-              Is Bundle?
             </label>
           </div>
 

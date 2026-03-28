@@ -75,6 +75,10 @@
   box-sizing: border-box;
 }
 
+.inputGroup input:hover {
+  border-color: #00f6ff;
+}
+
 .inputGroup input:focus {
   outline: none;
   border-color: #00f6ff;
@@ -147,4 +151,127 @@
   background: #94a3b8;
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+.customSelectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.customSelectTrigger {
+  width: 100%;
+  padding: 12px;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.customSelectTrigger:hover {
+  border-color: #00f6ff;
+}
+
+.arrow {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.customSelectList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin: 5px 0 0 0;
+  padding: 0;
+  list-style: none;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  animation: slideDown 0.2s ease-out forwards;
+}
+
+.customSelectOption {
+  padding: 10px 12px;
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-weight: 500;
+}
+
+.customSelectOption:hover {
+  background-color: rgba(0, 246, 255, 0.1);
+  color: #00f6ff;
+}
+
+.customSelectList::-webkit-scrollbar {
+  width: 4px;
+}
+.customSelectList::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hiddenFileInput {
+  display: none;
+}
+
+.fileUploadArea {
+  display: block;
+  width: 100%;
+  padding: 25px 20px;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background-color: rgba(15, 23, 42, 0.4);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.fileUploadArea:hover {
+  border-color: #00f6ff;
+  background-color: rgba(0, 246, 255, 0.05);
+}
+
+.fileUploadPlaceholder {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.fileName {
+  color: #00f6ff;
+  font-weight: 500;
+}
+
+.imagePreview {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-top: 10px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
 }
