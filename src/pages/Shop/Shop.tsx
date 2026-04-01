@@ -79,11 +79,21 @@ export function Shop() {
           </aside>
           <div className={styles.mainContent} id="figures">
             <div className={styles.productsHeader}>
-              <span>
-                {filters.searchQuery
-                  ? `Search Results for "${filters.searchQuery}" (${totalCount} items)`
-                  : `Found: ${totalCount} items`}
-              </span>
+              <div className={styles.resultsHeaderWrapper}>
+                <span>
+                  {filters.searchQuery
+                    ? `Search Results for "${filters.searchQuery}" (${totalCount} items)`
+                    : `Found: ${totalCount} items`}
+                </span>
+                {filters.searchQuery && (
+                  <button
+                    className={styles.clearSearchBtn}
+                    onClick={actions.resetFilters}
+                  >
+                    Clear All
+                  </button>
+                )}
+              </div>
               <div className={styles.sortContainer}>
                 <label htmlFor="sort-select">Sort by: </label>
                 <select

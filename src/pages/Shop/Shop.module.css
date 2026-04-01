@@ -20,6 +20,28 @@
   font-size: 0.9rem;
 }
 
+.resultsHeaderWrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.clearSearchBtn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.clearSearchBtn:hover {
+  color: #7f8998a3;
+}
+
 .sortContainer {
   display: flex;
   align-items: center;
