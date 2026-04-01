@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import {
   ShoppingCart,
   Search,
@@ -21,26 +20,76 @@ interface HeaderProps {
 
 export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const searchQuery = searchParams.get("search") || "";
+  const [searchParams] = useSearchParams();
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [allCollections, setAllCollections] = useState<string[]>([]);
+  const [localSearch, setLocalSearch] = useState(
+    searchParams.get("search") || "",
+  );
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+  const [popularSearches, setPopularSearches] = useState<string[]>([]);
   const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
 
   const isAdmin = user?.email === import.meta.env.VITE_ADMIN_EMAIL;
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-    setSearchParams((prev) => {
-      if (text) {
-        prev.set("search", text);
-      } else {
-        prev.delete("search");
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+        const response = await fetch(`${apiUrl}/products`);
+        if (!response.ok) throw new Error("Failed to fetch products");
+
+        const data = await response.json();
+        setAllProducts(data);
+        const uniqueCollections = Array.from(
+          new Set(data.map((item: any) => item.collection)),
+        );
+        setAllCollections(uniqueCollections as string[]);
+      } catch (error) {
+        console.error("Error fetching collections:", error);
       }
-      return prev;
-    });
+    };
+    fetchCollections();
+  }, []);
+
+  useEffect(() => {
+    if (isSearchFocused && allCollections.length > 0) {
+      const shuffled = [...allCollections].sort(() => 0.5 - Math.random());
+      setPopularSearches(shuffled.slice(0, 3));
+    }
+  }, [isSearchFocused, allCollections]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalSearch(e.target.value);
+  };
+
+  const handleSearchSubmit = () => {
+    if (localSearch.trim()) {
+      navigate(`/?search=${localSearch}`);
+    } else {
+      navigate(`/`);
+    }
+    setIsSearchFocused(false);
+    setLocalSearch("");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearchSubmit();
+      e.currentTarget.blur();
+    }
+  };
+
+  const handlePopularClick = (collection: string) => {
+    setLocalSearch(collection);
+    navigate(`/?search=${collection}`);
+    setIsSearchFocused(false);
+    setLocalSearch("");
   };
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
+    if (isMobileMenuOpen || isSearchFocused) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -48,7 +97,20 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, isSearchFocused]);
+
+  const searchResults = allProducts
+    .filter((product) => {
+      const titleMatch = product.title
+        ?.toLowerCase()
+        .includes(localSearch.toLowerCase());
+      const collectionMatch = product.collection
+        ?.toLowerCase()
+        .includes(localSearch.toLowerCase());
+
+      return titleMatch || collectionMatch;
+    })
+    .slice(0, 4);
 
   return (
     <header className={styles.headerWrapper}>
@@ -126,15 +188,86 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
             </nav>
           )}
           <div className={styles.actions}>
-            <div className={styles.searchContainer}>
+            {isSearchFocused && (
+              <div
+                className={styles.searchOverlay}
+                onClick={() => setIsSearchFocused(false)}
+              />
+            )}
+            <div
+              className={`${styles.searchContainer} ${isSearchFocused ? styles.searchContainerActive : ""}`}
+            >
               <input
                 type="text"
                 placeholder="Search figures..."
-                value={searchQuery}
+                value={localSearch}
                 onChange={handleSearchChange}
+                onKeyDown={handleKeyDown}
+                onFocus={() => setIsSearchFocused(true)}
                 className={styles.searchInput}
               />
-              <Search size={20} className={styles.searchIcon} />
+              <Search
+                size={20}
+                className={styles.searchIcon}
+                onClick={handleSearchSubmit}
+                style={{ cursor: "pointer" }}
+              />
+              {isSearchFocused && (
+                <div className={styles.searchDropdown}>
+                  {!localSearch ? (
+                    <>
+                      <h4 className={styles.dropdownTitle}>POPULAR SEARCHES</h4>
+                      {popularSearches.length > 0 && (
+                        <ul className={styles.popularList}>
+                          {popularSearches.map((collection) => (
+                            <li
+                              key={collection}
+                              className={styles.popularItem}
+                              onClick={() => handlePopularClick(collection)}
+                            >
+                              {collection}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </>
+                  ) : (
+                    <div className={styles.searchResults}>
+                      <h4 className={styles.dropdownTitle}>PRODUCTS</h4>
+                      {searchResults.length > 0 ? (
+                        <div className={styles.resultItemsWrapper}>
+                          {searchResults.map((product) => (
+                            <Link
+                              to={`/product/${product.id}`}
+                              key={product.id}
+                              className={styles.searchResultItem}
+                              onClick={() => setIsSearchFocused(false)}
+                            >
+                              <img
+                                src={product.imageUrl}
+                                alt={product.title}
+                                className={styles.searchResultImg}
+                              />
+                              <div className={styles.searchResultInfo}>
+                                <span className={styles.searchResultTitle}>
+                                  {product.title}
+                                </span>
+                                <span className={styles.searchResultPrice}>
+                                  ${product.price}
+                                </span>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className={styles.noResults}>
+                          No figures found for "{localSearch}"
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             <Link to="/wishlist" className={styles.actionBtn}>

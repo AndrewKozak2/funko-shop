@@ -44,6 +44,18 @@
   gap: 1.5rem;
 }
 
+.searchOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(11, 21, 36, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+  animation: fadeIn 0.2s ease-out;
+}
+
 .searchContainer {
   display: flex;
   align-items: center;
@@ -52,6 +64,144 @@
   border-radius: 10px;
   border: 1px solid #334155;
   transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.searchContainerActive {
+  z-index: 100;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px rgba(0, 246, 255, 0.4);
+  background-color: #0f172a;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.searchDropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  box-sizing: border-box;
+  left: 0;
+  width: 100%;
+  background-color: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+  z-index: 101;
+  animation: slideDown 0.2s ease-out;
+}
+
+.dropdownTitle {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+}
+
+.popularList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.popularItem {
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.popularItem:hover {
+  background-color: rgba(0, 246, 255, 0.1);
+  color: #00f6ff;
+  transform: translateX(5px);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.resultItemsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.searchResultItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.searchResultItem:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.searchResultImg {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.searchResultInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.searchResultTitle {
+  color: #f8fafc;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.searchResultPrice {
+  color: #10b981;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.noResults {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 15px 0;
 }
 
 .searchInput {
@@ -60,6 +210,11 @@
   outline: none;
   color: var(--color-text);
   width: 200px;
+  transition: width 0.3s ease;
+}
+
+.searchContainerActive .searchInput {
+  width: 300px;
 }
 
 .searchIcon {

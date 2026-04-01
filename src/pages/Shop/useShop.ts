@@ -33,9 +33,9 @@ export function useShop() {
       const isWithinPrice =
         product.price >= priceRange[0] && product.price <= priceRange[1];
 
-      const matchesSearch = product.title
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
+      const matchesSearch =
+        product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.collection?.toLowerCase().includes(searchQuery.toLowerCase());
 
       const isWithinCollection =
         selectedCollections.length === 0 ||
