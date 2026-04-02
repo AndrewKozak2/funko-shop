@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
+import { useCartStore } from "../../store/cartStore";
 import { LogOut } from "lucide-react";
 import styles from "./Profile.module.css";
 import toast from "react-hot-toast";
@@ -35,6 +36,8 @@ export function Profile() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteInput, setDeleteInput] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const clearCart = useCartStore((state) => state.clearCart);
 
   useEffect(() => {
     if (!user) {
@@ -111,6 +114,7 @@ export function Profile() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Deleted failed");
       logout();
+      clearCart();
       toast.success("Account successfully deleted");
     } catch (error) {
       console.error("Error deleting account:", error);
@@ -122,6 +126,7 @@ export function Profile() {
 
   const handleLogout = () => {
     logout();
+    clearCart();
     navigate("/");
   };
 

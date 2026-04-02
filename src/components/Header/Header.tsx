@@ -11,6 +11,7 @@ import {
   Settings,
 } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
+import { useCartStore } from "../../store/cartStore";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
@@ -30,6 +31,8 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
   const [popularSearches, setPopularSearches] = useState<string[]>([]);
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+
+  const clearCart = useCartStore((state) => state.clearCart);
 
   const isAdmin = user?.email === import.meta.env.VITE_ADMIN_EMAIL;
 
@@ -173,6 +176,7 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
               {user ? (
                 <button
                   onClick={() => {
+                    clearCart();
                     logout();
                     setIsMobileMenuOpen(false);
                   }}
@@ -298,7 +302,10 @@ export function Header({ cartItemsCount, onOpenCart }: HeaderProps) {
                     <span className={styles.userName}>{user.name}</span>
                   </Link>
                   <button
-                    onClick={logout}
+                    onClick={() => {
+                      clearCart();
+                      logout();
+                    }}
                     className={styles.actionBtn}
                     title="Logout"
                   >
