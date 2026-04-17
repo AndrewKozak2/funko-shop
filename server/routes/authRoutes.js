@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const { protect } = require("../middleware/authMiddleware");
 const {
   register,
   login,
@@ -16,7 +16,7 @@ router.post("/login", login);
 router.post("/verify", verify);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
-router.put("/update", updateUser);
-router.delete("/:email", deleteUser);
+router.put("/update", protect, updateUser);
+router.delete("/:email", protect, deleteUser);
 
 module.exports = router;

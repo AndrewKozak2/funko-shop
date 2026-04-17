@@ -196,17 +196,15 @@ const resetPassword = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const { email, newName } = req.body;
-    if (!email || !newName) {
-      return res
-        .status(400)
-        .json({ message: "Email and new name are required" });
+    const { newName } = req.body;
+    if (!newName) {
+      return res.status(400).json({ message: "New name is required" });
     }
-    const updatedUser = await User.findOneAndUpdate(
-      { email: email },
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
       { name: newName },
       { new: true },
-    );
+    ).select("-password");
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -222,9 +220,8 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const emailToDelete = req.params.email;
     await Order.updateMany(
-      { "customer.email": emailToDelete },
+      { "customer.email": req.user.email },
       {
         $set: {
           "customer.email": "deleted@user.com",
@@ -234,11 +231,11 @@ const deleteUser = async (req, res) => {
         },
       },
     );
-    const deleteUser = await User.findOneAndDelete({ email: emailToDelete });
+    const deleteUser = await User.findByIdAndDelete(req.user._id);
     if (!deleteUser) {
       return res.status(404).json({ message: "User not deleted" });
     }
-    res.json({ message: "Account deleted" });
+    res.json({ message: "Account deleted successfully" });
   } catch (error) {
     console.error("Error to deleting user", error);
     res.status(500).json({ message: "Server Error" });
