@@ -202,7 +202,7 @@ const updateUser = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
       { name: newName },
-      { new: true },
+      { returnDocument: "after" },
     ).select("-password");
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
