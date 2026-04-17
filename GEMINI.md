@@ -5,6 +5,7 @@
 ## 🚀 Технологічний стек
 
 ### Frontend
+
 - **Framework:** React 19 (Vite, TypeScript)
 - **State Management:** Zustand
 - **Routing:** React Router DOM v7
@@ -14,6 +15,7 @@
 - **Styling:** CSS Modules
 
 ### Backend
+
 - **Runtime:** Node.js (Express 5)
 - **Database:** MongoDB (Mongoose)
 - **Authentication:** JWT + Bcryptjs
@@ -23,6 +25,7 @@
 ## 📂 Структура проєкту
 
 ### Frontend (`/src`)
+
 - `components/`: Багаторазові UI компоненти (Header, Footer, ProductCard, Cart тощо).
 - `pages/`: Основні сторінки додатку та адміністративна панель.
 - `store/`: Zustand-сховища (auth, cart, product, wishlist).
@@ -31,6 +34,7 @@
 - `types/`: Описи TypeScript інтерфейсів.
 
 ### Backend (`/server`)
+
 - `models/`: Схеми Mongoose (User, Product, Order, PromoCode).
 - `controllers/`: Логіка обробки запитів.
 - `routes/`: Опис API ендпоінтів.
@@ -57,6 +61,7 @@
 ## ⚙️ Налаштування оточення
 
 Створіть `.env` файл у папці `server/`:
+
 ```env
 PORT=5000
 MONGO_URI=your_mongodb_uri
@@ -67,6 +72,7 @@ CLOUDINARY_API_SECRET=secret
 EMAIL_USER=your_email
 EMAIL_PASS=your_app_password
 ```
+
 # Як ти маєш мені допомагати (Правила CLI)
 
 Я Junior-розробник. Твоя задача — бути моїм Senior-ментором:
