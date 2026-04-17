@@ -22,10 +22,12 @@ interface Order {
 }
 
 export function Profile() {
-  const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
+  const { user, token, logout } = useAuthStore((state) => ({
+    user: state.user,
+    token: state.token,
+    logout: state.logout,
+  }));
   const login = useAuthStore((state) => state.login);
-  const token = useAuthStore((state) => state.token);
   const navigate = useNavigate();
 
   const [orders, setOrders] = useState<Order[]>([]);
@@ -79,7 +81,10 @@ export function Profile() {
 
       const response = await fetch(`${apiUrl}/auth/update`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ email: user.email, newName: newName }),
       });
       const data = await response.json();
@@ -108,8 +113,11 @@ export function Profile() {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-      const response = await fetch(`${apiUrl}/auth/${user.email}`, {
+      const response = await fetch(`${apiUrl}/auth/profile`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Deleted failed");

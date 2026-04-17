@@ -23,12 +23,13 @@ const protect = async (req, res, next) => {
   }
 };
 
-const admin = (req, res, next) => {
-  if (req.user && req.user.role === "admin") {
+const adminAuth = (req, res, next) => {
+  const adminKey = req.headers["x-admin-key"];
+  if (adminKey === process.env.ADMIN_SECRET) {
     next();
   } else {
-    res.status(403).json({ message: "Not authorized as an admin" });
+    res.status(403).json({ message: "Access denied. Invalid admin key" });
   }
 };
 
-module.exports = { protect, admin };
+module.exports = { protect, adminAuth };

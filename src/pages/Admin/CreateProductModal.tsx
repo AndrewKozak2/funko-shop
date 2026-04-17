@@ -70,6 +70,9 @@ export function CreateProductModal({
         uploadData.append("image", imageFile);
         const uploadResponse = await fetch(`${apiUrl}/upload`, {
           method: "POST",
+          headers: {
+            "x-admin-key": savedKey || "",
+          },
           body: uploadData,
         });
         if (!uploadResponse.ok) throw new Error("Failed to load image");

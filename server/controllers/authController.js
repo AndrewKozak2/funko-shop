@@ -179,7 +179,6 @@ const resetPassword = async (req, res) => {
         .json({ message: "Reset code has expired. Please request a new one." });
     }
 
-    const bcrypt = require("bcryptjs");
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 

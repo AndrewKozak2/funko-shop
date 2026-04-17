@@ -17,6 +17,6 @@ router.post("/verify", verify);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 router.put("/update", protect, updateUser);
-router.delete("/:email", protect, deleteUser);
+router.delete("/profile", protect, deleteUser);
 
 module.exports = router;

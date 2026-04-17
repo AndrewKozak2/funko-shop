@@ -2,12 +2,6 @@ const PromoCode = require("../models/PromoCode");
 
 const getPromos = async (req, res) => {
   try {
-    const adminKey = req.headers["x-admin-key"];
-    if (adminKey !== process.env.ADMIN_SECRET) {
-      return res
-        .status(403)
-        .json({ message: "Access denied. Invalid admin key" });
-    }
     const promoCodes = await PromoCode.find();
     res.json(promoCodes);
   } catch (error) {
@@ -20,11 +14,6 @@ const getPromos = async (req, res) => {
 
 const createPromo = async (req, res) => {
   try {
-    const adminKey = req.headers["x-admin-key"];
-    if (adminKey !== process.env.ADMIN_SECRET) {
-      return res.status(403).json({ message: "Access denied" });
-    }
-
     const { code, discount } = req.body;
 
     if (!code || !discount) {
@@ -48,10 +37,6 @@ const createPromo = async (req, res) => {
 
 const deletePromo = async (req, res) => {
   try {
-    const adminKey = req.headers["x-admin-key"];
-    if (adminKey !== process.env.ADMIN_SECRET) {
-      return res.status(403).json({ message: "Access denied" });
-    }
     const { id } = req.params;
     const deletePromoCode = await PromoCode.findByIdAndDelete(id);
     if (!deletePromoCode) {
