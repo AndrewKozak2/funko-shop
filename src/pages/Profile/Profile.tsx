@@ -22,11 +22,9 @@ interface Order {
 }
 
 export function Profile() {
-  const { user, token, logout } = useAuthStore((state) => ({
-    user: state.user,
-    token: state.token,
-    logout: state.logout,
-  }));
+  const user = useAuthStore((state) => state.user);
+  const token = useAuthStore((state) => state.token);
+  const logout = useAuthStore((state) => state.logout);
   const login = useAuthStore((state) => state.login);
   const navigate = useNavigate();
 
