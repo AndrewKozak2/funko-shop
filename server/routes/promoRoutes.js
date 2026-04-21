@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-const { adminAuth } = require("../middleware/authMiddleware");
+const {
+  protect,
+  adminOnly,
+  adminAuth,
+} = require("../middleware/authMiddleware");
 
 const {
   applyPromo,
@@ -11,8 +15,8 @@ const {
 } = require("../controllers/promoController");
 
 router.post("/apply", applyPromo);
-router.get("/", adminAuth, getPromos);
-router.post("/", adminAuth, createPromo);
-router.delete("/:id", adminAuth, deletePromo);
+router.get("/", protect, adminOnly, adminAuth, getPromos);
+router.post("/", protect, adminOnly, adminAuth, createPromo);
+router.delete("/:id", protect, adminOnly, adminAuth, deletePromo);
 
 module.exports = router;

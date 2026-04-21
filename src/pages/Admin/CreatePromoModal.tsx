@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAuthStore } from "../../store/authStore";
 import toast from "react-hot-toast";
 import styles from "./CreatePromoModal.module.css";
 
@@ -16,7 +17,7 @@ export function CreatePromoModal({
   const [code, setCode] = useState("");
   const [discount, setDiscount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const { token } = useAuthStore();
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -43,6 +44,7 @@ export function CreatePromoModal({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
           "x-admin-key": savedKey || "",
         },
         body: JSON.stringify({ code, discount: Number(discount) }),

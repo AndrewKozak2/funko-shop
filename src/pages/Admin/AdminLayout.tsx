@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAuthStore } from "../../store/authStore";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import styles from "./AdminLayout.module.css";
@@ -8,6 +9,7 @@ export function AdminLayout() {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { token } = useAuthStore();
 
   useEffect(() => {
     const savedKey = localStorage.getItem("adminKey");
@@ -24,12 +26,13 @@ export function AdminLayout() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
           "x-admin-key": key,
         },
       });
 
-      if (response.status === 403) {
-        toast.error("Wrong password!");
+      if (response.status === 401 || response.status === 403) {
+        toast.error("Wrong admin password or unauthorized access!");
         localStorage.removeItem("adminKey");
         setIsAuthenticated(false);
         return;

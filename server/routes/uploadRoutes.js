@@ -4,7 +4,11 @@ const express = require("express");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const { adminAuth } = require("../middleware/authMiddleware");
+const {
+  protect,
+  adminOnly,
+  adminAuth,
+} = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -18,16 +22,23 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-router.post("/", adminAuth, upload.single("image"), (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No file provided" });
+router.post(
+  "/",
+  protect,
+  adminOnly,
+  adminAuth,
+  upload.single("image"),
+  (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file provided" });
+      }
+      res.status(200).json({ imageUrl: req.file.path });
+    } catch (error) {
+      console.error("Upload error:", error);
+      res.status(500).json({ message: "Error uploading image to cloud" });
     }
-    res.status(200).json({ imageUrl: req.file.path });
-  } catch (error) {
-    console.error("Upload error:", error);
-    res.status(500).json({ message: "Error uploading image to cloud" });
-  }
-});
+  },
+);
 
 module.exports = router;

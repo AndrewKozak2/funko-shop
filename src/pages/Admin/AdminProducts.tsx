@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import styles from "./AdminProducts.module.css";
-import toast from "react-hot-toast";
+import { useAuthStore } from "../../store/authStore";
 import { CreateProductModal } from "./CreateProductModal";
+import toast from "react-hot-toast";
+import styles from "./AdminProducts.module.css";
 
 export interface ProductAdmin {
   _id: string;
@@ -19,6 +20,7 @@ export function AdminProducts() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const { token } = useAuthStore();
 
   useEffect(() => {
     fetchAdminProducts();
@@ -34,6 +36,7 @@ export function AdminProducts() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
           "x-admin-key": savedKey || "",
         },
       });
@@ -62,6 +65,7 @@ export function AdminProducts() {
       const response = await fetch(`${apiUrl}/products/${idToDelete}`, {
         method: "DELETE",
         headers: {
+          Authorization: `Bearer ${token}`,
           "x-admin-key": savedKey || "",
         },
       });
@@ -139,7 +143,9 @@ export function AdminProducts() {
             {filteredProducts.map((product) => (
               <tr key={product._id}>
                 <td>
-                  <strong className={styles.productId} title={product.id}>{product.id}</strong>
+                  <strong className={styles.productId} title={product.id}>
+                    {product.id}
+                  </strong>
                 </td>
                 <td>
                   <img

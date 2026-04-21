@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuthStore } from "../../store/authStore";
 import { CreatePromoModal } from "./CreatePromoModal";
 import styles from "./AdminPromoCodes.module.css";
 import toast from "react-hot-toast";
@@ -14,6 +15,7 @@ export function AdminPromoCodes() {
   const [promoCodes, setPromoCodes] = useState<PromoCode[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { token } = useAuthStore();
   useEffect(() => {
     fetchPromoCodes();
   }, []);
@@ -28,6 +30,7 @@ export function AdminPromoCodes() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
           "x-admin-key": savedKey || "",
         },
       });
@@ -60,6 +63,7 @@ export function AdminPromoCodes() {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
           "x-admin-key": savedKey || "",
         },
       });

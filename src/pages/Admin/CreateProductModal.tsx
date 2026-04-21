@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuthStore } from "../../store/authStore";
 import { type ProductAdmin } from "./AdminProducts";
 import styles from "./CreateProductModal.module.css";
 import toast from "react-hot-toast";
@@ -25,6 +26,7 @@ export function CreateProductModal({
   const [bundleCollection, setBundleCollection] = useState("");
   const [selectedBundleItems, setSelectedBundleItems] = useState<string[]>([]);
   const [bundlePrice, setBundlePrice] = useState("");
+  const { token } = useAuthStore();
   const uniqueCollections = Array.from(
     new Set(products.map((p) => p.collection)),
   );
@@ -71,6 +73,7 @@ export function CreateProductModal({
         const uploadResponse = await fetch(`${apiUrl}/upload`, {
           method: "POST",
           headers: {
+            Authorization: `Bearer ${token}`,
             "x-admin-key": savedKey || "",
           },
           body: uploadData,
@@ -130,6 +133,7 @@ export function CreateProductModal({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
           "x-admin-key": savedKey,
         },
         body: JSON.stringify(finalPayload),

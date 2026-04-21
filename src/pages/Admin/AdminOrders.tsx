@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuthStore } from "../../store/authStore";
 import styles from "./AdminOrders.module.css";
 import toast from "react-hot-toast";
 
@@ -17,6 +18,7 @@ interface Order {
 
 export function AdminOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const { token } = useAuthStore();
 
   useEffect(() => {
     const savedKey = localStorage.getItem("adminKey");
@@ -32,6 +34,7 @@ export function AdminOrders() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
           "x-admin-key": key,
         },
       });
@@ -55,6 +58,7 @@ export function AdminOrders() {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
           "x-admin-key": savedKey || "",
         },
         body: JSON.stringify({ status: newStatus }),
